@@ -10,6 +10,9 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
         public Db Db { get; set; }
         
         public RabbitMqQueues RabbitMqQueues { get; set; }
+        
+        [Optional]
+        public int? OrderBookThrottlingRateThreshold { get; set; }
 
         [Optional] 
         public string OrderBooksCacheKeyPattern { get; set; } = "OrderBookService:{0}:{1}";

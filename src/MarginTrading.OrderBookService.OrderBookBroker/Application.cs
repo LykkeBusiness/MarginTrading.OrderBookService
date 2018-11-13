@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +20,8 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
         private readonly IDatabase _redisDatabase;
         private readonly ILog _log;
         private readonly Settings _settings;
+        private readonly ConcurrentDictionary<string, DateTime> _lastMessageTimes = 
+            new ConcurrentDictionary<string, DateTime>();
 
         public Application(
             IDatabase redisDatabase,
@@ -36,8 +39,26 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
         protected override BrokerSettingsBase Settings => _settings;
         protected override string ExchangeName => _settings.RabbitMqQueues.OrderBooks.ExchangeName;
         protected override string RoutingKey => null;
-
+        
         protected override Task HandleMessage(ExternalExchangeOrderbookMessage orderBookMessage)
+        {
+            var messageTime = DateTime.UtcNow;
+            var key = GetKey(orderBookMessage.ExchangeName, orderBookMessage.AssetPairId);
+            var previousTime = _lastMessageTimes.TryGetValue(key, out var previousTimeExtracted)
+                ? previousTimeExtracted
+                : DateTime.MinValue;
+
+            if (!_settings.OrderBookThrottlingRateThreshold.HasValue
+                || messageTime.Subtract(previousTime).TotalSeconds > (1 / _settings.OrderBookThrottlingRateThreshold))
+            {
+                _lastMessageTimes.AddOrUpdate(key, messageTime, (k, v) => messageTime);
+                return HandleMessageWithoutThrottling(orderBookMessage);
+            }
+            
+            return Task.CompletedTask;
+        }
+
+        private Task HandleMessageWithoutThrottling(ExternalExchangeOrderbookMessage orderBookMessage)
         {
             var orderBook = orderBookMessage.ToDomain();
             
@@ -50,7 +71,7 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
                 }
                 catch (Exception ex)
                 {
-                    await _log.WriteErrorAsync(nameof(OrderBookBroker), nameof(HandleMessage), "SwitchThread", ex);
+                    await _log.WriteErrorAsync(nameof(OrderBookBroker), nameof(HandleMessageWithoutThrottling), "SwitchThread", ex);
                 }
             });
         }
