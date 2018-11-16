@@ -15,15 +15,7 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
         public int? OrderBookThrottlingRateThreshold { get; set; }
 
         [Optional] 
-        public string OrderBooksCacheKeyPattern { get; set; } = "OrderBookService:{0}:{1}";
-    }
-    
-    public static class CacheSettingsExt
-    {
-        public static string GetOrderBookKey(this Settings settings, string exchangeName, string assetPairId)
-        {
-            return string.Format(settings.OrderBooksCacheKeyPattern, exchangeName, assetPairId);
-        }
+        public string OrderBooksCacheKeyPattern { get; set; } = "OrderBookService:OrderBooks";
     }
     
     [UsedImplicitly]
