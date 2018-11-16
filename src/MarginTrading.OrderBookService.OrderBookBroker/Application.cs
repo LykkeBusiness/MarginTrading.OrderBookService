@@ -66,8 +66,10 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
             {
                 try
                 {
-                    await _redisDatabase.StringSetAsync(GetKey(orderBook.ExchangeName, orderBook.AssetPairId), 
-                        orderBook.ToJson());
+                    await _redisDatabase.HashSetAsync(_settings.OrderBooksCacheKeyPattern, new []
+                    {
+                        new HashEntry(GetKey(orderBook.ExchangeName, orderBook.AssetPairId), orderBook.ToJson()), 
+                    });
                 }
                 catch (Exception ex)
                 {
@@ -78,7 +80,7 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
 
         private string GetKey(string exchangeName, string assetPairId)
         {
-            return string.Format(_settings.OrderBooksCacheKeyPattern, exchangeName, assetPairId);
+            return $"{exchangeName}-{assetPairId}";
         }
     }
 }

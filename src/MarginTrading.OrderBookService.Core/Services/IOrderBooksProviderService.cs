@@ -7,5 +7,7 @@ namespace MarginTrading.OrderBookService.Core.Services
     public interface IOrderBooksProviderService
     {   
         Task<ExternalOrderBook> GetCurrentOrderBookAsync(string exchange, string assetPairId);
+        
+        Task<List<ExternalOrderBook>> GetCurrentOrderBooksAsync();
     }
 }

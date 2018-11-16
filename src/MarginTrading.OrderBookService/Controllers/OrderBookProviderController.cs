@@ -39,5 +39,17 @@ namespace MarginTrading.OrderBookService.Controllers
             
             return orderBook.ToContract();
         }
+
+        /// <summary>
+        /// Get all current order books.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetOrderBooks")]
+        public async Task<List<ExternalOrderBookContract>> GetOrderBooks()
+        {
+            var orderBook = await _orderBooksProviderService.GetCurrentOrderBooksAsync();
+            
+            return orderBook.Select(x => x.ToContract()).ToList();
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MarginTrading.OrderBookService.Core.Domain;
 using MarginTrading.OrderBookService.Core.Services;
@@ -25,19 +26,30 @@ namespace MarginTrading.OrderBookService.Services
         
         public async Task<ExternalOrderBook> GetCurrentOrderBookAsync(string exchange, string assetPairId)
         {
-            var data = await _redisDatabase.StringGetAsync(GetKey(exchange, assetPairId));
+            var data = await _redisDatabase.HashGetAsync(_dbSettings.OrderBooksCacheKeyPattern, 
+                GetKey(exchange, assetPairId));
 
             if (!data.HasValue)
             {
                 throw new Exception($"Order book with exchange: {exchange} and assetPairId {assetPairId} not found.");
             }
 
-            return JsonConvert.DeserializeObject<ExternalOrderBook>(data);
+            return Deserialize(data);
+        }
+
+        public async Task<List<ExternalOrderBook>> GetCurrentOrderBooksAsync()
+        {
+            var data = await _redisDatabase.HashGetAllAsync(_dbSettings.OrderBooksCacheKeyPattern);
+
+            return data.Select(x => Deserialize(x.Value)).ToList();
         }
 
         private string GetKey(string exchangeName, string assetPairId)
         {
-            return string.Format(_dbSettings.OrderBooksCacheKeyPattern, exchangeName, assetPairId);
+            return $"{exchangeName}-{assetPairId}";
         }
+
+        private static ExternalOrderBook Deserialize(string data) 
+            => JsonConvert.DeserializeObject<ExternalOrderBook>(data);
     }
 }
