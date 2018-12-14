@@ -2,12 +2,10 @@ using System.Threading.Tasks;
 using MarginTrading.OrderBookService.Core.Domain;
 using MarginTrading.OrderBookService.Core.Domain.Abstractions;
 
-namespace MarginTrading.OrderBookService.Core.Repositories
+namespace MarginTrading.OrderBookService.Core.Services
 {
-    public interface IExecutionOrderBookRepository
+    public interface IExecutionOrderBooksProviderService
     {
-        Task AddAsync(IOrderExecutionOrderBook orderBook);
-        
         Task<IOrderExecutionOrderBook> GetAsync(string orderId);
     }
 }

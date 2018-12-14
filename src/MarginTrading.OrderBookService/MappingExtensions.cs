@@ -3,6 +3,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Lykke.MarginTrading.OrderBookService.Contracts.Models;
 using MarginTrading.OrderBookService.Core.Domain;
+using MarginTrading.OrderBookService.Core.Domain.Abstractions;
 
 namespace MarginTrading.OrderBookService
 {
@@ -23,6 +24,15 @@ namespace MarginTrading.OrderBookService
                 Timestamp = orderBook.Timestamp,
                 Asks = orderBook.Asks.ToContracts(),
                 Bids = orderBook.Bids.ToContracts(),
+            };
+        }
+        
+        internal static OrderExecutionOrderBookContract ToContract(this IOrderExecutionOrderBook orderBook)
+        {
+            return new OrderExecutionOrderBookContract
+            {
+                OrderId = orderBook.OrderId,
+                OrderBook = orderBook.OrderBook.ToContract(),
             };
         }
 

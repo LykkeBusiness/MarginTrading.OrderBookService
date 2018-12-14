@@ -20,10 +20,14 @@ namespace MarginTrading.OrderBookService.Controllers
     public class OrderBookProviderController : Controller, IOrderBookProviderApi
     {
         private readonly IOrderBooksProviderService _orderBooksProviderService;
+        private readonly IExecutionOrderBooksProviderService _executionOrderBooksProviderService;
 
-        public OrderBookProviderController(IOrderBooksProviderService orderBooksProviderService)
+        public OrderBookProviderController(
+            IOrderBooksProviderService orderBooksProviderService,
+            IExecutionOrderBooksProviderService executionOrderBooksProviderService)
         {
             _orderBooksProviderService = orderBooksProviderService;
+            _executionOrderBooksProviderService = executionOrderBooksProviderService;
         }
 
         /// <summary>
@@ -50,6 +54,19 @@ namespace MarginTrading.OrderBookService.Controllers
             var orderBook = await _orderBooksProviderService.GetCurrentOrderBooksAsync();
             
             return orderBook.Select(x => x.ToContract()).ToList();
+        }
+
+        /// <summary>
+        /// Get trade execution order book for <paramref name="orderId"/>.
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        [HttpGet("GetExecutionOrderBook")]
+        public async Task<OrderExecutionOrderBookContract> GetExecutionOrderBook(string orderId)
+        {
+            var orderBook = await _executionOrderBooksProviderService.GetAsync(orderId);
+            
+            return orderBook.ToContract();
         }
     }
 }

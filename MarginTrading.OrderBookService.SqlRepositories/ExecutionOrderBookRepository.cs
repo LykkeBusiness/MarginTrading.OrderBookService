@@ -7,6 +7,7 @@ using Common;
 using Common.Log;
 using Dapper;
 using Lykke.Logs.MsSql.Extensions;
+using MarginTrading.OrderBookService.Core.Domain;
 using MarginTrading.OrderBookService.Core.Domain.Abstractions;
 using MarginTrading.OrderBookService.Core.Repositories;
 
@@ -75,6 +76,15 @@ INDEX IX_{0}_Base (OrderId)
                     
                     throw new Exception(msg);
                 }
+            }
+        }
+
+        public async Task<IOrderExecutionOrderBook> GetAsync(string orderId)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                return await conn.QueryFirstOrDefaultAsync<OrderExecutionOrderBookEntity>(
+                    $"SELECT * FROM {TableName} WHERE OrderId=@orderId", orderId);
             }
         }
     }
