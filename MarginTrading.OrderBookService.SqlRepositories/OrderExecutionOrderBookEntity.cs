@@ -29,8 +29,6 @@ namespace MarginTrading.OrderBookService.SqlRepositories
         public string Asks { get; set; }
 
         public string Bids { get; set; }
-        
-        public decimal Spread { get; set; }
 
         public static OrderExecutionOrderBookEntity Create(IOrderExecutionOrderBook orderBook)
         {
@@ -42,7 +40,6 @@ namespace MarginTrading.OrderBookService.SqlRepositories
                 Timestamp = orderBook.OrderBook.Timestamp,
                 Asks = orderBook.OrderBook.ToJson(),
                 Bids = orderBook.OrderBook.ToJson(),
-                Spread = orderBook.Spread,
             };
         }
     }
