@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Common;
 using Common.Log;
 using Dapper;
-using Lykke.MarginTrading.BrokerBase.Extensions;
+using Lykke.Logs.MsSql.Extensions;
 using MarginTrading.OrderBookService.Core.Domain.Abstractions;
 using MarginTrading.OrderBookService.Core.Repositories;
 
