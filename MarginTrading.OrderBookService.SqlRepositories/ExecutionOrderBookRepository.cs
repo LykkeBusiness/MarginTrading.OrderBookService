@@ -84,7 +84,7 @@ INDEX IX_{0}_Base (OrderId)
             using (var conn = new SqlConnection(_connectionString))
             {
                 return await conn.QueryFirstOrDefaultAsync<OrderExecutionOrderBookEntity>(
-                    $"SELECT * FROM {TableName} WHERE OrderId=@orderId", orderId);
+                    $"SELECT * FROM {TableName} WHERE OrderId=@orderId", new {orderId});
             }
         }
     }
