@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using Common;
 using Common.Log;
 using Lykke.MarginTrading.BrokerBase;
 using Lykke.MarginTrading.BrokerBase.Models;
@@ -49,7 +50,8 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
                 }
                 catch (Exception ex)
                 {
-                    await _log.WriteErrorAsync(nameof(ExecutionOrderBookBroker), nameof(HandleMessage), "SwitchThread", ex);
+                    await _log.WriteErrorAsync(nameof(ExecutionOrderBookBroker), nameof(HandleMessage), 
+                        orderBook.ToJson(), ex);
                 }
             });
         }
