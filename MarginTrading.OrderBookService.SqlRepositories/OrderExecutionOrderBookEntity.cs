@@ -38,8 +38,8 @@ namespace MarginTrading.OrderBookService.SqlRepositories
                 ExchangeName = orderBook.OrderBook.ExchangeName,
                 AssetPairId = orderBook.OrderBook.AssetPairId,
                 Timestamp = orderBook.OrderBook.Timestamp,
-                Asks = orderBook.OrderBook.ToJson(),
-                Bids = orderBook.OrderBook.ToJson(),
+                Asks = orderBook.OrderBook.Asks.ToJson(),
+                Bids = orderBook.OrderBook.Bids.ToJson(),
             };
         }
     }
