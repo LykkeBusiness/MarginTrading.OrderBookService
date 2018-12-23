@@ -4,9 +4,11 @@ using Common.Log;
 using Lykke.Common;
 using Lykke.Common.Chaos;
 using Lykke.SettingsReader;
+using MarginTrading.OrderBookService.Core.Repositories;
 using MarginTrading.OrderBookService.Core.Services;
 using MarginTrading.OrderBookService.Core.Settings;
 using MarginTrading.OrderBookService.Services;
+using MarginTrading.OrderBookService.SqlRepositories;
 using Microsoft.Extensions.Internal;
 using StackExchange.Redis;
 
@@ -40,15 +42,34 @@ namespace MarginTrading.OrderBookService.Modules
 
             RegisterServices(builder);
             RegisterRedis(builder);
+            RegisterRepositories(builder);
+        }
+
+        private void RegisterRepositories(ContainerBuilder builder)
+        {
+            if (_settings.CurrentValue.OrderBookService.Db.StorageMode == StorageMode.Azure)
+            {
+                //todo implement azure repos before using
+            }
+            else if (_settings.CurrentValue.OrderBookService.Db.StorageMode == StorageMode.SqlServer)
+            {
+                builder.RegisterInstance(new ExecutionOrderBookRepository(
+                        _settings.CurrentValue.OrderBookService.Db.DataConnString, _log))
+                    .As<IExecutionOrderBookRepository>();
+            }
         }
 
         private void RegisterServices(ContainerBuilder builder)
         {
             builder.RegisterType<OrderBooksProviderService>().As<IOrderBooksProviderService>().SingleInstance();
             
+            builder.RegisterType<ExecutionOrderBooksProviderService>().As<IExecutionOrderBooksProviderService>().SingleInstance();
+            
             builder.RegisterType<ConvertService>()
                 .As<IConvertService>()
                 .SingleInstance();
+            
+            
         }
 
         private void RegisterRedis(ContainerBuilder builder)

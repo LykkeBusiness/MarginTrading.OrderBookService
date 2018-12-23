@@ -8,6 +8,7 @@ namespace MarginTrading.OrderBookService.Core.Settings
     {
         public StorageMode StorageMode { get; set; }
         public string LogsConnString { get; set; }
+        public string DataConnString { get; set; }
 
         [UsedImplicitly(ImplicitUseKindFlags.Assign)]
         public RedisSettings RedisSettings { get; set; }

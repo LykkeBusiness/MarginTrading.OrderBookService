@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using MarginTrading.OrderBookService.Core.Domain.Abstractions;
 
 namespace MarginTrading.OrderBookService.Core.Domain
 {
@@ -14,5 +15,7 @@ namespace MarginTrading.OrderBookService.Core.Domain
         public List<VolumePrice> Asks { get; set; }
 
         public List<VolumePrice> Bids { get; set; }
+        
+        
     }
 }
