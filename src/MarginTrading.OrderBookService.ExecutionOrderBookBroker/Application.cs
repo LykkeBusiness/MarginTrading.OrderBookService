@@ -8,6 +8,7 @@ using Lykke.MarginTrading.BrokerBase.Models;
 using Lykke.MarginTrading.BrokerBase.Settings;
 using Lykke.MarginTrading.OrderBookService.Contracts.Models;
 using Lykke.SlackNotifications;
+using MarginTrading.OrderBookService.Core.Domain;
 using MarginTrading.OrderBookService.Core.Repositories;
 using MarginTrading.OrderBookService.Core.Services;
 
