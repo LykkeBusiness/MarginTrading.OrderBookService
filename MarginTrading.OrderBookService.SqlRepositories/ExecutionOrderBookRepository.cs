@@ -20,6 +20,7 @@ namespace MarginTrading.OrderBookService.SqlRepositories
         private const string CreateTableScript = "CREATE TABLE [{0}](" +
                                                  @"[OID] [bigint] NOT NULL IDENTITY (1,1),
 [OrderId] [nvarchar](64) NOT NULL,
+[Spread] [float] NOT NULL,
 [ExchangeName] [nvarchar](64) NOT NULL,
 [AssetPairId] [nvarchar](64) NOT NULL,
 [Timestamp] [datetime] NOT NULL,

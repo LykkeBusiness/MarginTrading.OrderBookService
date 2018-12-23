@@ -4,6 +4,8 @@ namespace MarginTrading.OrderBookService.Core.Domain.Abstractions
     {
         string OrderId { get; }
         
+        decimal Spread { get; }
+        
         ExternalOrderBook OrderBook { get; }
     }
 }

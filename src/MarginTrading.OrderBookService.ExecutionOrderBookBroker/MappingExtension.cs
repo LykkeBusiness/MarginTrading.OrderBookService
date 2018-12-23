@@ -2,6 +2,7 @@
 using System.Linq;
 using Lykke.MarginTrading.OrderBookService.Contracts.Models;
 using MarginTrading.OrderBookService.Core.Domain;
+using MarginTrading.OrderBookService.Services;
 
 namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
 {
@@ -9,10 +10,9 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
     {
         public static OrderExecutionOrderBook ToDomain(this OrderExecutionOrderBookContract contract)
         {
-            return new OrderExecutionOrderBook
+            var orderBook = new OrderExecutionOrderBook
             {
                 OrderId = contract.OrderId,
-                Volume = contract.Volume,
                 OrderBook = new ExternalOrderBook
                 {
                     ExchangeName = contract.OrderBook.ExchangeName,
@@ -22,6 +22,10 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
                     Bids = contract.OrderBook.Bids.Select(x => new VolumePrice{ Volume = x.Volume, Price = x.Price}).ToList(),
                 },
             };
+
+            orderBook.Spread = SpreadCalculator.CalculateSpread(orderBook, contract.Volume);
+
+            return orderBook;
         }
     }
 }
