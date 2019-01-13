@@ -11,6 +11,8 @@ namespace MarginTrading.OrderBookService.SqlRepositories
     {
         public string OrderId { get; set; }
         
+        public decimal Spread { get; set; }
+
         ExternalOrderBook IOrderExecutionOrderBook.OrderBook => new ExternalOrderBook
         {
             ExchangeName = ExchangeName,
@@ -35,6 +37,7 @@ namespace MarginTrading.OrderBookService.SqlRepositories
             return new OrderExecutionOrderBookEntity
             {
                 OrderId = orderBook.OrderId,
+                Spread = orderBook.Spread,
                 ExchangeName = orderBook.OrderBook.ExchangeName,
                 AssetPairId = orderBook.OrderBook.AssetPairId,
                 Timestamp = orderBook.OrderBook.Timestamp,
