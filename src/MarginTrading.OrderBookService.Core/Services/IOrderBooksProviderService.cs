@@ -8,6 +8,6 @@ namespace MarginTrading.OrderBookService.Core.Services
     {   
         Task<ExternalOrderBook> GetCurrentOrderBookAsync(string exchange, string assetPairId);
         
-        Task<List<ExternalOrderBook>> GetCurrentOrderBooksAsync();
+        Task<List<ExternalOrderBook>> GetCurrentOrderBooksAsync(string assetPairId = null);
     }
 }

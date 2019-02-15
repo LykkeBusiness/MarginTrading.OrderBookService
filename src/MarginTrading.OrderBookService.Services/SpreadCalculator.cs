@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MarginTrading.OrderBookService.Core.Domain;
 
 namespace MarginTrading.OrderBookService.Services
@@ -9,24 +10,33 @@ namespace MarginTrading.OrderBookService.Services
 
         public static decimal CalculateSpread(OrderExecutionOrderBook message, decimal volume)
         {
-            var spread = 0M;
-            var currentLevel = 0;
-            var qtyLeft = Math.Abs(volume);
-
-            while (qtyLeft > 0 && currentLevel < message.OrderBook.Asks.Count)
+            decimal SpreadWeight(IReadOnlyList<VolumePrice> orderbook)
             {
-                var currentLevelVolume = (volume > 0 
-                    ? message.OrderBook.Asks[currentLevel].Volume
-                    : message.OrderBook.Bids[currentLevel].Volume);
-                
-                spread += (qtyLeft - currentLevelVolume > 0 ? currentLevelVolume : qtyLeft)
-                          * (message.OrderBook.Asks[currentLevel].Price - message.OrderBook.Bids[currentLevel].Price);
+                var weight = 0M;
+                var currentLevel = 0;
+                var qtyLeft = Math.Abs(volume);
 
-                qtyLeft -= currentLevelVolume;
-                currentLevel++;
+                while (qtyLeft > 0 && currentLevel < message.OrderBook.Asks.Count)
+                {
+                    var currentLevelVolume = currentLevel != orderbook.Count - 1 
+                        ? orderbook[currentLevel].Volume
+                        : decimal.MaxValue;
+
+                    weight += (qtyLeft - currentLevelVolume > 0 ? currentLevelVolume : qtyLeft)
+                              * orderbook[currentLevel].Price;
+                    qtyLeft -= currentLevelVolume;
+                    currentLevel++;
+                }
+
+                return weight;
             }
 
-            return spread;
+            var askSpreadWeight = SpreadWeight(message.OrderBook.Asks);
+            var bidSpreadWeight = SpreadWeight(message.OrderBook.Bids);
+
+            return askSpreadWeight - bidSpreadWeight;
         }
+        
+        
     }
 }

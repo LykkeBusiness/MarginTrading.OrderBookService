@@ -22,13 +22,14 @@ namespace Lykke.MarginTrading.OrderBookService.Contracts
         [ItemCanBeNull]
         [Get("/api/orderbookprovider/GetOrderBook")]
         Task<ExternalOrderBookContract> GetOrderBook([NotNull] string exchange, [NotNull] string assetPair);
-        
+
         /// <summary>
         /// Get all current order books.
         /// </summary>
+        /// <param name="assetPairId"></param>
         /// <returns></returns>
         [Get("/api/orderbookprovider/GetOrderBooks")]
-        Task<List<ExternalOrderBookContract>> GetOrderBooks();
+        Task<List<ExternalOrderBookContract>> GetOrderBooks(string assetPairId = null);
 
         /// <summary>
         /// Get trade execution order book for <paramref name="orderId"/>.
