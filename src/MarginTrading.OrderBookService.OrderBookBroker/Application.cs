@@ -65,11 +65,6 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
         private Task HandleMessageWithoutThrottling(ExternalExchangeOrderbookMessage orderBookMessage)
         {
             var orderBook = orderBookMessage.ToDomain(_systemClock.UtcNow.UtcDateTime);
-
-            if (!string.IsNullOrWhiteSpace(_settings.DefaultExchangeName))
-            {
-                orderBook.ExchangeName = _settings.DefaultExchangeName;
-            }
             
             return Task.Run(async () =>
             {
