@@ -11,6 +11,7 @@ using Lykke.MarginTrading.BrokerBase.Settings;
 using Lykke.SlackNotifications;
 using MarginTrading.OrderBookService.Core.Domain;
 using MarginTrading.OrderbookAggregator.Contracts.Messages;
+using Microsoft.Extensions.Internal;
 using StackExchange.Redis;
 
 namespace MarginTrading.OrderBookService.OrderBookBroker
@@ -18,6 +19,7 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
     public class Application : BrokerApplicationBase<ExternalExchangeOrderbookMessage>
     {
         private readonly IDatabase _redisDatabase;
+        private readonly ISystemClock _systemClock;
         private readonly ILog _log;
         private readonly Settings _settings;
         private readonly ConcurrentDictionary<string, DateTime> _lastMessageTimes = 
@@ -25,6 +27,7 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
 
         public Application(
             IDatabase redisDatabase,
+            ISystemClock systemClock,
             ILog logger,
             Settings settings, 
             CurrentApplicationInfo applicationInfo,
@@ -32,6 +35,7 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
         : base(logger, slackNotificationsSender, applicationInfo, MessageFormat.MessagePack)
         {
             _redisDatabase = redisDatabase;
+            _systemClock = systemClock;
             _log = logger;
             _settings = settings;
         }
@@ -60,7 +64,12 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
 
         private Task HandleMessageWithoutThrottling(ExternalExchangeOrderbookMessage orderBookMessage)
         {
-            var orderBook = orderBookMessage.ToDomain();
+            var orderBook = orderBookMessage.ToDomain(_systemClock.UtcNow.UtcDateTime);
+
+            if (!string.IsNullOrWhiteSpace(_settings.DefaultExchangeName))
+            {
+                orderBook.ExchangeName = _settings.DefaultExchangeName;
+            }
             
             return Task.Run(async () =>
             {

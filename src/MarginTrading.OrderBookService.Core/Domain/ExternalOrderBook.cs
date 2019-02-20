@@ -12,6 +12,8 @@ namespace MarginTrading.OrderBookService.Core.Domain
 
         public DateTime Timestamp { get; set; }
 
+        public DateTime ReceiveTimestamp { get; set; }
+
         public List<VolumePrice> Asks { get; set; }
 
         public List<VolumePrice> Bids { get; set; }

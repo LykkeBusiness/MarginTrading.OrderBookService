@@ -21,5 +21,8 @@ namespace Lykke.MarginTrading.OrderBookService.Contracts.Models
 
         [Key(4)]
         public List<VolumePriceContract> Bids { get; set; }
+
+        [Key(5)]
+        public DateTime ReceiveTimestamp { get; set; }
     }
 }
