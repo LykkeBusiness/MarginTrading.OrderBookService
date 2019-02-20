@@ -14,19 +14,19 @@ namespace MarginTrading.OrderBookService.Services
     public class OrderBooksProviderService : IOrderBooksProviderService
     {
         private readonly IDatabase _redisDatabase;
-        private readonly DbSettings _dbSettings;
+        private readonly OrderBookServiceSettings _settings;
 
         public OrderBooksProviderService(
             IDatabase redisDatabase,
-            DbSettings dbSettings)
+            OrderBookServiceSettings settings)
         {
             _redisDatabase = redisDatabase;
-            _dbSettings = dbSettings;
+            _settings = settings;
         }
         
         public async Task<ExternalOrderBook> GetCurrentOrderBookAsync(string exchange, string assetPairId)
         {
-            var data = await _redisDatabase.HashGetAsync(_dbSettings.OrderBooksCacheKeyPattern, 
+            var data = await _redisDatabase.HashGetAsync(_settings.Db.OrderBooksCacheKeyPattern, 
                 GetKey(exchange, assetPairId));
 
             if (!data.HasValue)
@@ -39,10 +39,10 @@ namespace MarginTrading.OrderBookService.Services
 
         public async Task<List<ExternalOrderBook>> GetCurrentOrderBooksAsync(string assetPairId = null)
         {
-            var data = await _redisDatabase.HashGetAllAsync(_dbSettings.OrderBooksCacheKeyPattern);
-            
+            var data = await _redisDatabase.HashGetAllAsync(_settings.Db.OrderBooksCacheKeyPattern);
+
             return data
-                .Select(x => Deserialize(x.Value))
+                .Select(x => ApplyDefaultExchangeSettings(Deserialize(x.Value)))
                 .Where(x => string.IsNullOrEmpty(assetPairId) || x.AssetPairId == assetPairId)
                 .ToList();
         }
@@ -50,6 +50,16 @@ namespace MarginTrading.OrderBookService.Services
         private string GetKey(string exchangeName, string assetPairId)
         {
             return $"{exchangeName}-{assetPairId}";
+        }
+
+        private ExternalOrderBook ApplyDefaultExchangeSettings(ExternalOrderBook externalOrderBook)
+        {
+            if (!string.IsNullOrWhiteSpace(_settings.DefaultExchangeName))
+            {
+                externalOrderBook.ExchangeName = _settings.DefaultExchangeName;
+            }
+
+            return externalOrderBook;
         }
 
         private static ExternalOrderBook Deserialize(string data) 

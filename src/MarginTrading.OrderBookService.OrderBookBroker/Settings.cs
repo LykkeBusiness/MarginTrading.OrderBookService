@@ -16,9 +16,6 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
 
         [Optional] 
         public string OrderBooksCacheKeyPattern { get; set; } = "OrderBookService:OrderBooks";
-        
-        [Optional]
-        public string DefaultExchangeName { get; set; }
     }
     
     [UsedImplicitly]
