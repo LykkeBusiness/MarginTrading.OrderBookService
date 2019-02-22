@@ -14,8 +14,5 @@ namespace MarginTrading.OrderBookService.Core.Settings
         
         [Optional]
         public bool UseSerilog { get; set; }
-        
-        [Optional]
-        public string DefaultExchangeName { get; set; }
     }
 }

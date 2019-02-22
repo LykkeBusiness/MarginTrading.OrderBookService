@@ -42,7 +42,7 @@ namespace MarginTrading.OrderBookService.Services
             var data = await _redisDatabase.HashGetAllAsync(_settings.Db.OrderBooksCacheKeyPattern);
 
             return data
-                .Select(x => ApplyDefaultExchangeSettings(Deserialize(x.Value)))
+                .Select(x => Deserialize(x.Value))
                 .Where(x => string.IsNullOrEmpty(assetPairId) || x.AssetPairId == assetPairId)
                 .ToList();
         }
@@ -50,16 +50,6 @@ namespace MarginTrading.OrderBookService.Services
         private string GetKey(string exchangeName, string assetPairId)
         {
             return $"{exchangeName}-{assetPairId}";
-        }
-
-        private ExternalOrderBook ApplyDefaultExchangeSettings(ExternalOrderBook externalOrderBook)
-        {
-            if (!string.IsNullOrWhiteSpace(_settings.DefaultExchangeName))
-            {
-                externalOrderBook.ExchangeName = _settings.DefaultExchangeName;
-            }
-
-            return externalOrderBook;
         }
 
         private static ExternalOrderBook Deserialize(string data) 
