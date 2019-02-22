@@ -41,22 +41,12 @@ namespace MarginTrading.OrderBookService.Services
         {
             var data = await _redisDatabase.HashGetAllAsync(_settings.Db.OrderBooksCacheKeyPattern);
 
-            return data.Select(x => ApplyDefaultExchangeSettings(Deserialize(x.Value))).ToList();
+            return data.Select(x => Deserialize(x.Value)).ToList();
         }
 
         private string GetKey(string exchangeName, string assetPairId)
         {
             return $"{exchangeName}-{assetPairId}";
-        }
-
-        private ExternalOrderBook ApplyDefaultExchangeSettings(ExternalOrderBook externalOrderBook)
-        {
-            if (!string.IsNullOrWhiteSpace(_settings.DefaultExchangeName))
-            {
-                externalOrderBook.ExchangeName = _settings.DefaultExchangeName;
-            }
-
-            return externalOrderBook;
         }
 
         private static ExternalOrderBook Deserialize(string data) 
