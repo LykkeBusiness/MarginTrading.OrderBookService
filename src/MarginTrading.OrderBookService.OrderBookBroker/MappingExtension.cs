@@ -10,13 +10,14 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
 {
     public static class MappingExtension
     {
-        public static ExternalOrderBook ToDomain(this ExternalExchangeOrderbookMessage orderBookMessage)
+        public static ExternalOrderBook ToDomain(this ExternalExchangeOrderbookMessage orderBookMessage, DateTime now)
         {
             return new ExternalOrderBook
             {
                 ExchangeName = orderBookMessage.ExchangeName,
                 AssetPairId = orderBookMessage.AssetPairId,
                 Timestamp = orderBookMessage.Timestamp,
+                ReceiveTimestamp = now,
                 Asks = orderBookMessage.Asks.ToDomain(),
                 Bids = orderBookMessage.Bids.ToDomain(),
             };

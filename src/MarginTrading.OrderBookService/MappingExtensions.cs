@@ -22,6 +22,7 @@ namespace MarginTrading.OrderBookService
                 ExchangeName = orderBook.ExchangeName,
                 AssetPairId = orderBook.AssetPairId,
                 Timestamp = orderBook.Timestamp,
+                ReceiveTimestamp = orderBook.ReceiveTimestamp,
                 Asks = orderBook.Asks.ToContracts(),
                 Bids = orderBook.Bids.ToContracts(),
             };

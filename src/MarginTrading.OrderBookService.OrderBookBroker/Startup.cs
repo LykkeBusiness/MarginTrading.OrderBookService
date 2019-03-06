@@ -7,6 +7,7 @@ using Lykke.SettingsReader;
 using MarginTrading.OrderBookService.Core.Modules;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Internal;
 
 namespace MarginTrading.OrderBookService.OrderBookBroker
 {
@@ -25,6 +26,8 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
             var currentSettings = settings.CurrentValue;
             
             builder.RegisterType<Application>().As<IBrokerApplication>().SingleInstance();
+
+            builder.RegisterType<SystemClock>().As<ISystemClock>().SingleInstance();
 
             builder.RegisterModule(new RedisModule(currentSettings.Db.RedisConfiguration));
         }
