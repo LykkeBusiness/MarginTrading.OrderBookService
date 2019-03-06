@@ -37,11 +37,14 @@ namespace MarginTrading.OrderBookService.Services
             return Deserialize(data);
         }
 
-        public async Task<List<ExternalOrderBook>> GetCurrentOrderBooksAsync()
+        public async Task<List<ExternalOrderBook>> GetCurrentOrderBooksAsync(string assetPairId = null)
         {
             var data = await _redisDatabase.HashGetAllAsync(_settings.Db.OrderBooksCacheKeyPattern);
-
-            return data.Select(x => Deserialize(x.Value)).ToList();
+            
+            return data
+                .Select(x => Deserialize(x.Value))
+                .Where(x => string.IsNullOrEmpty(assetPairId) || x.AssetPairId == assetPairId)
+                .ToList();
         }
 
         private string GetKey(string exchangeName, string assetPairId)

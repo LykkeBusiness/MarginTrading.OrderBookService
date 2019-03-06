@@ -47,11 +47,12 @@ namespace MarginTrading.OrderBookService.Controllers
         /// <summary>
         /// Get all current order books.
         /// </summary>
+        /// <param name="assetPairId"></param>
         /// <returns></returns>
         [HttpGet("GetOrderBooks")]
-        public async Task<List<ExternalOrderBookContract>> GetOrderBooks()
+        public async Task<List<ExternalOrderBookContract>> GetOrderBooks(string assetPairId = null)
         {
-            var orderBook = await _orderBooksProviderService.GetCurrentOrderBooksAsync();
+            var orderBook = await _orderBooksProviderService.GetCurrentOrderBooksAsync(assetPairId);
             
             return orderBook.Select(x => x.ToContract()).ToList();
         }
