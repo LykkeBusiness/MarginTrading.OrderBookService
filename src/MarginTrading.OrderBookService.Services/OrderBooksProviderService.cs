@@ -40,7 +40,7 @@ namespace MarginTrading.OrderBookService.Services
         public async Task<List<ExternalOrderBook>> GetCurrentOrderBooksAsync(string assetPairId = null)
         {
             var data = await _redisDatabase.HashGetAllAsync(_settings.Db.OrderBooksCacheKeyPattern);
-
+            
             return data
                 .Select(x => Deserialize(x.Value))
                 .Where(x => string.IsNullOrEmpty(assetPairId) || x.AssetPairId == assetPairId)
