@@ -8,6 +8,7 @@ using Lykke.MarginTrading.OrderBookService.Contracts;
 using Lykke.MarginTrading.OrderBookService.Contracts.Models;
 using MarginTrading.OrderBookService.Core.Domain;
 using MarginTrading.OrderBookService.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -16,6 +17,7 @@ namespace MarginTrading.OrderBookService.Controllers
     /// <summary>
     /// Controller to retrieve current order books
     /// </summary>
+    [Authorize]
     [Route("api/[controller]")]
     public class OrderBookProviderController : Controller, IOrderBookProviderApi
     {

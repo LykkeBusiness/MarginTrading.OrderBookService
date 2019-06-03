@@ -12,6 +12,8 @@ using Lykke.Logs.MsSql.Repositories;
 using Lykke.Logs.Serilog;
 using Lykke.MarginTrading.OrderBookService.Contracts.Api;
 using Lykke.SettingsReader;
+using Lykke.Snow.Common.Startup;
+using Lykke.Snow.Common.Startup.ApiKey;
 using MarginTrading.OrderBookService.Core.Modules;
 using MarginTrading.OrderBookService.Core.Services;
 using MarginTrading.OrderBookService.Core.Settings;
@@ -58,15 +60,23 @@ namespace MarginTrading.OrderBookService
                         options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                         options.SerializerSettings.Converters.Add(new StringEnumConverter());
                     });
+                
+                var appSettings = Configuration.LoadSettings<AppSettings>();
+                
+                services.AddApiKeyAuth(appSettings.CurrentValue.OrderBookServiceClient);
 
                 services.AddSwaggerGen(options =>
                 {
                     options.DefaultLykkeConfiguration("v1", ServiceName + " API");
                     options.OperationFilter<CustomOperationIdOperationFilter>();
+                    if (!string.IsNullOrWhiteSpace(appSettings.CurrentValue.OrderBookServiceClient?.ApiKey))
+                    {
+                        options.OperationFilter<ApiKeyHeaderOperationFilter>();
+                    }
                 });
 
                 var builder = new ContainerBuilder();
-                var appSettings = Configuration.LoadSettings<AppSettings>();
+                
                 Log = CreateLog(Configuration, services, appSettings);
 
                 builder.RegisterModule(new OrderBookServiceModule(appSettings, Log));
@@ -105,6 +115,7 @@ namespace MarginTrading.OrderBookService
                 app.UseLykkeMiddleware(ServiceName, ex => new ErrorResponse {ErrorMessage = "Technical problem", Details = ex.Message});
 #endif
                 
+                app.UseAuthentication();
                 app.UseMvc();
                 app.UseSwagger();
                 app.UseSwaggerUI(a => a.SwaggerEndpoint("/swagger/v1/swagger.json", "Main Swagger"));
