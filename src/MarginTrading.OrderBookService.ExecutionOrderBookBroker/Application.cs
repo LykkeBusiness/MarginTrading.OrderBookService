@@ -40,7 +40,7 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
 
         protected override BrokerSettingsBase Settings => _settings;
         protected override string ExchangeName => _settings.RabbitMqQueues.ExecutionOrderBooks.ExchangeName;
-        protected override string RoutingKey => "OrderExecutionOrderBookContract";
+        public override string RoutingKey => "OrderExecutionOrderBookContract";
         
         protected override Task HandleMessage(OrderExecutionOrderBookContract orderBookMessage)
         {
