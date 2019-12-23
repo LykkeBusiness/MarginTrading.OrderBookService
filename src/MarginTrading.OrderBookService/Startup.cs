@@ -17,6 +17,8 @@ using Lykke.MarginTrading.OrderBookService.Contracts.Api;
 using Lykke.SettingsReader;
 using Lykke.Snow.Common.Startup;
 using Lykke.Snow.Common.Startup.ApiKey;
+using Lykke.Snow.Common.Startup.Hosting;
+using Lykke.Snow.Common.Startup.Log;
 using MarginTrading.OrderBookService.Core.Modules;
 using MarginTrading.OrderBookService.Core.Services;
 using MarginTrading.OrderBookService.Core.Settings;
@@ -27,6 +29,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -42,7 +45,7 @@ namespace MarginTrading.OrderBookService
         private IContainer ApplicationContainer { get; set; }
         private IConfigurationRoot Configuration { get; }
         [CanBeNull] private ILog Log { get; set; }
-        
+
         public Startup(IHostingEnvironment env)
         {
             Configuration = new ConfigurationBuilder()
@@ -63,9 +66,9 @@ namespace MarginTrading.OrderBookService
                         options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                         options.SerializerSettings.Converters.Add(new StringEnumConverter());
                     });
-                
+
                 var appSettings = Configuration.LoadSettings<AppSettings>();
-                
+
                 services.AddApiKeyAuth(appSettings.CurrentValue.OrderBookServiceClient);
 
                 services.AddSwaggerGen(options =>
@@ -79,8 +82,10 @@ namespace MarginTrading.OrderBookService
                 });
 
                 var builder = new ContainerBuilder();
-                
+
                 Log = CreateLog(Configuration, services, appSettings);
+
+                services.AddSingleton<ILoggerFactory>(x => new WebHostLoggerFactory(Log));
 
                 builder.RegisterModule(new OrderBookServiceModule(appSettings, Log));
                 builder.RegisterModule(new RedisModule(appSettings.CurrentValue.OrderBookService.Db.RedisSettings
@@ -117,7 +122,7 @@ namespace MarginTrading.OrderBookService
 #else
                 app.UseLykkeMiddleware(ServiceName, ex => new ErrorResponse {ErrorMessage = "Technical problem", Details = ex.Message});
 #endif
-                
+
                 app.UseAuthentication();
                 app.UseMvc();
                 app.UseSwagger();
@@ -137,7 +142,9 @@ namespace MarginTrading.OrderBookService
         private Task StartApplication()
         {
             try
-            {   
+            {
+                Program.Host.WriteLogsAsync(Environment, LogLocator.Log).Wait();
+
                 Log?.WriteMonitorAsync("", "", "Started").Wait();
             }
             catch (Exception ex)
@@ -145,7 +152,7 @@ namespace MarginTrading.OrderBookService
                 Log?.WriteFatalErrorAsync(nameof(Startup), nameof(StartApplication), "", ex).Wait();
                 throw;
             }
-            
+
             return Task.CompletedTask;
         }
 
@@ -191,11 +198,11 @@ namespace MarginTrading.OrderBookService
             }
         }
 
-        private static ILog CreateLog(IConfiguration configuration, IServiceCollection services, 
+        private static ILog CreateLog(IConfiguration configuration, IServiceCollection services,
             IReloadingManager<AppSettings> settings)
         {
             var logName = $"{nameof(OrderBookService)}Log";
-            
+
             var consoleLogger = new LogToConsole();
             var aggregateLogger = new AggregateLogger();
 
@@ -217,7 +224,7 @@ namespace MarginTrading.OrderBookService
             }
 
             LogLocator.Log = aggregateLogger;
-            
+
             return aggregateLogger;
         }
     }
