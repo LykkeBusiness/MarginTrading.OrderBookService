@@ -1,14 +1,14 @@
 // Copyright (c) 2019 Lykke Corp.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Log;
+using Lykke.Common.Log;
 using MarginTrading.OrderBookService.Core.Domain;
 using MarginTrading.OrderBookService.Core.Services;
 using MarginTrading.OrderBookService.Core.Settings;
-using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 
@@ -18,13 +18,16 @@ namespace MarginTrading.OrderBookService.Services
     {
         private readonly IDatabase _redisDatabase;
         private readonly OrderBookServiceSettings _settings;
+        private readonly ILog _log;
 
         public OrderBooksProviderService(
             IDatabase redisDatabase,
-            OrderBookServiceSettings settings)
+            OrderBookServiceSettings settings, 
+            ILog log)
         {
             _redisDatabase = redisDatabase;
             _settings = settings;
+            _log = log;
         }
         
         public async Task<ExternalOrderBook> GetCurrentOrderBookAsync(string exchange, string assetPairId)
@@ -34,7 +37,8 @@ namespace MarginTrading.OrderBookService.Services
 
             if (!data.HasValue)
             {
-                throw new Exception($"Order book with exchange: {exchange} and assetPairId {assetPairId} not found.");
+                this._log.Warning($"Order book with exchange: {exchange} and assetPairId {assetPairId} not found.");
+                return null;
             }
 
             return Deserialize(data);
