@@ -46,7 +46,7 @@ namespace MarginTrading.OrderBookService.Controllers
         {
             var orderBook = await _orderBooksProviderService.GetCurrentOrderBookAsync(exchange, assetPair);
             
-            return orderBook.ToContract();
+            return orderBook?.ToContract();
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace MarginTrading.OrderBookService.Controllers
         {
             var orderBook = await _executionOrderBooksProviderService.GetAsync(orderId);
             
-            return orderBook.ToContract();
+            return orderBook?.ToContract();
         }
     }
 }
