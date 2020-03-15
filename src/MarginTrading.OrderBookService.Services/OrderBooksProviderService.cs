@@ -37,7 +37,8 @@ namespace MarginTrading.OrderBookService.Services
 
             if (!data.HasValue)
             {
-                this._log.Warning($"Order book with exchange: {exchange} and assetPairId {assetPairId} not found.");
+                this._log.WriteWarningAsync(nameof(OrderBooksProviderService), nameof(GetCurrentOrderBookAsync),
+                    $"Order book with exchange: {exchange} and assetPairId {assetPairId} not found.");
                 return null;
             }
 
