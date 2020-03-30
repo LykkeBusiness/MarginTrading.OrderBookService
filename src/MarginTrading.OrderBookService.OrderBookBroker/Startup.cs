@@ -23,7 +23,7 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
 
         protected override string ApplicationName => "OrderBookBroker";
 
-        protected override void RegisterCustomServices(IServiceCollection services, ContainerBuilder builder, 
+        protected override void RegisterCustomServices(ContainerBuilder builder, 
             IReloadingManager<Settings> settings, ILog log)
         {
             var currentSettings = settings.CurrentValue;

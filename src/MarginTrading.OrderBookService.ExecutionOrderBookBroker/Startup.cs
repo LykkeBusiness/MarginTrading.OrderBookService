@@ -27,7 +27,7 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
 
         protected override string ApplicationName => "ExecutionOrderBookBroker";
 
-        protected override void RegisterCustomServices(IServiceCollection services, ContainerBuilder builder, 
+        protected override void RegisterCustomServices(ContainerBuilder builder, 
             IReloadingManager<Settings> settings, ILog log)
         {
             builder.RegisterType<Application>().As<IBrokerApplication>().SingleInstance();
