@@ -2,7 +2,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -13,6 +12,7 @@ using Lykke.Logs.MsSql.Extensions;
 using MarginTrading.OrderBookService.Core.Domain;
 using MarginTrading.OrderBookService.Core.Domain.Abstractions;
 using MarginTrading.OrderBookService.Core.Repositories;
+using Microsoft.Data.SqlClient;
 
 namespace MarginTrading.OrderBookService.SqlRepositories
 {
