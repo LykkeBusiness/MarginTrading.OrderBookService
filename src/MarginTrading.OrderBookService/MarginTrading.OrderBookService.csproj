@@ -3,7 +3,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <NoWarn>$(NoWarn);1591</NoWarn>
-    <Version>1.4.3</Version>
+    <Version>1.4.4</Version>
     <AssemblyName>MarginTrading.OrderBookService</AssemblyName>
     <RootNamespace>MarginTrading.OrderBookService</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -38,7 +38,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
-    <PackageReference Include="Lykke.Common" Version="7.3.1" />
+    <PackageReference Include="Lykke.Common" Version="7.5.0" />
     <PackageReference Include="Lykke.Common.ApiLibrary" Version="1.10.1" />
     <PackageReference Include="Lykke.JobTriggers" Version="2.0.0" />
     <PackageReference Include="Lykke.Logs" Version="7.2.1" />
@@ -46,7 +46,7 @@
     <PackageReference Include="Lykke.Logs.Serilog" Version="2.0.0" />
     <PackageReference Include="Lykke.Messaging" Version="5.0.0" />
     <PackageReference Include="Lykke.Messaging.RabbitMq" Version="2.0.0" />
-    <PackageReference Include="Lykke.RabbitMqBroker" Version="7.5.1" />
+    <PackageReference Include="Lykke.RabbitMqBroker" Version="7.13.1" />
     <PackageReference Include="Lykke.SettingsReader" Version="5.2.0" />
     <PackageReference Include="Lykke.HttpClientGenerator" Version="2.5.0" />
     <PackageReference Include="Lykke.Snow.Common.Startup" Version="1.2.14" />
