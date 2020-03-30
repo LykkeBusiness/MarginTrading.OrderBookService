@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Lykke.MarginTrading.OrderBookService.Contracts.Models;
-using Microsoft.AspNetCore.Mvc;
 using Refit;
 
 namespace Lykke.MarginTrading.OrderBookService.Contracts
