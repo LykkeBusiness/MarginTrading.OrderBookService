@@ -77,7 +77,7 @@ namespace MarginTrading.OrderBookService
                     options.OperationFilter<CustomOperationIdOperationFilter>();
                     if (!string.IsNullOrWhiteSpace(_mtSettingsManager.CurrentValue.OrderBookServiceClient?.ApiKey))
                     {
-                        options.OperationFilter<ApiKeyHeaderOperationFilter>();
+                        options.AddApiKeyAwareness();
                     }
                 });
 
