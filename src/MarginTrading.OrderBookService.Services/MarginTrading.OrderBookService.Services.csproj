@@ -9,7 +9,7 @@
     <ProjectReference Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Lykke.Common" Version="7.3.1" />
+    <PackageReference Include="Lykke.Common" Version="7.5.0" />
     <PackageReference Include="Lykke.Logs" Version="7.2.1" />
     <PackageReference Include="morelinq" Version="2.10.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
