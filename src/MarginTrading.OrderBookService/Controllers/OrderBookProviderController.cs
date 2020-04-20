@@ -1,19 +1,14 @@
 // Copyright (c) 2019 Lykke Corp.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using Lykke.Common.Api.Contract.Responses;
 using Lykke.MarginTrading.OrderBookService.Contracts;
 using Lykke.MarginTrading.OrderBookService.Contracts.Models;
-using MarginTrading.OrderBookService.Core.Domain;
 using MarginTrading.OrderBookService.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace MarginTrading.OrderBookService.Controllers
 {
@@ -72,6 +67,15 @@ namespace MarginTrading.OrderBookService.Controllers
         {
             var orderBook = await _executionOrderBooksProviderService.GetAsync(orderId);
             
+            return orderBook?.ToContract();
+        }
+
+        /// <inheritdoc cref="IOrderBookProviderApi"/>
+        [HttpGet("GetExecutionOrderBook/byExternalOrderId")]
+        public async Task<OrderExecutionOrderBookContract> GetExecutionOrderBookByExternalOrderId(string externalOrderId)
+        {
+            var orderBook = await _executionOrderBooksProviderService.GetByExternalOrderAsync(externalOrderId);
+
             return orderBook?.ToContract();
         }
     }

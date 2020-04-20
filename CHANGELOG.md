@@ -13,6 +13,9 @@ ALTER TABLE ExecutionOrderBooks
 ADD ExternalOrderId nvarchar(128)
 GO
 
+CREATE INDEX IX_ExecutionOrderBooks_ExternalOrderId ON ExecutionOrderBooks (ExternalOrderId) include (Spread)
+GO
+
 -- data migration
 UPDATE e
 SET ExternalOrderId = t.ExternalOrderId
