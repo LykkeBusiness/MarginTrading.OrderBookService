@@ -35,7 +35,8 @@ namespace MarginTrading.OrderBookService
         {
             return new OrderExecutionOrderBookContract
             {
-                ExternalOrderId = orderBook.OrderId,
+                OrderId = orderBook.OrderId,
+                ExternalOrderId = orderBook.ExternalOrderId,
                 OrderBook = orderBook.OrderBook.ToContract(),
             };
         }

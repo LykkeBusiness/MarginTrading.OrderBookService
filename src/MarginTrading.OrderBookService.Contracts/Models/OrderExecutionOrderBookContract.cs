@@ -12,10 +12,10 @@ namespace Lykke.MarginTrading.OrderBookService.Contracts.Models
     public class OrderExecutionOrderBookContract
     {
         /// <summary>
-        /// External Order ID
+        /// Order ID
         /// </summary>
         [Key(0)]
-        public string ExternalOrderId { get; set; }
+        public string OrderId { get; set; }
         
         /// <summary>
         /// Order execution signed volume 
@@ -28,5 +28,11 @@ namespace Lykke.MarginTrading.OrderBookService.Contracts.Models
         /// </summary>
         [Key(2)]
         public ExternalOrderBookContract OrderBook { get; set; }
+        
+        /// <summary>
+        /// External order id
+        /// </summary>
+        [Key(3)]
+        public string ExternalOrderId { get; set; }
     }
 }

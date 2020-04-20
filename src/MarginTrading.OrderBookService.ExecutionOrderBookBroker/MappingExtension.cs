@@ -15,7 +15,8 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
         {
             var orderBook = new OrderExecutionOrderBook
             {
-                OrderId = contract.ExternalOrderId,
+                OrderId = contract.OrderId,
+                ExternalOrderId = contract.ExternalOrderId,
                 OrderBook = new ExternalOrderBook
                 {
                     ExchangeName = contract.OrderBook.ExchangeName,
