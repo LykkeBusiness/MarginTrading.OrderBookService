@@ -12,5 +12,6 @@ namespace MarginTrading.OrderBookService.Core.Repositories
         Task AddAsync(IOrderExecutionOrderBook orderBook);
         
         Task<IOrderExecutionOrderBook> GetAsync(string orderId);
+        Task<IOrderExecutionOrderBook> GetByExternalOrderAsync(string externalOrderId);
     }
 }
