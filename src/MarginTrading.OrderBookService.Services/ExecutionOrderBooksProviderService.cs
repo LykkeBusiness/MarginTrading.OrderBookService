@@ -21,6 +21,7 @@ namespace MarginTrading.OrderBookService.Services
         
         public async Task<IOrderExecutionOrderBook> GetAsync(string orderId)
         {
+            
             return await _executionOrderBookRepository.GetAsync(orderId);
         }
     }
