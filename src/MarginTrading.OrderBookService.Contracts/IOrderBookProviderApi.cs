@@ -39,7 +39,7 @@ namespace Lykke.MarginTrading.OrderBookService.Contracts
         /// </summary>
         /// <param name="orderId"></param>
         /// <returns></returns>
-        [Obsolete]
+        [Obsolete("Use method GetExecutionOrderBookByExternalOrderId instead.")]
         [Get("/api/orderbookprovider/GetExecutionOrderBook")]
         Task<OrderExecutionOrderBookContract> GetExecutionOrderBook(string orderId);
 
