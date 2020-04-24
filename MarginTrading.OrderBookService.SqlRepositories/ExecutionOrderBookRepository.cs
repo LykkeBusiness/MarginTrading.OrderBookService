@@ -10,7 +10,6 @@ using Common;
 using Common.Log;
 using Dapper;
 using Lykke.Logs.MsSql.Extensions;
-using MarginTrading.OrderBookService.Core.Domain;
 using MarginTrading.OrderBookService.Core.Domain.Abstractions;
 using MarginTrading.OrderBookService.Core.Repositories;
 
@@ -22,7 +21,8 @@ namespace MarginTrading.OrderBookService.SqlRepositories
 
         private const string CreateTableScript = "CREATE TABLE [{0}](" +
                                                  @"[OID] [bigint] NOT NULL IDENTITY (1,1),
-[OrderId] [nvarchar](64) NOT NULL,
+[OrderId] [nvarchar](128) NOT NULL,
+[ExternalOrderId] [nvarchar](128) NULL,
 [Spread] [float] NOT NULL,
 [ExchangeName] [nvarchar](64) NOT NULL,
 [AssetPairId] [nvarchar](64) NOT NULL,
@@ -89,6 +89,15 @@ INDEX IX_{0}_Base (OrderId)
             {
                 return await conn.QueryFirstOrDefaultAsync<OrderExecutionOrderBookEntity>(
                     $"SELECT * FROM {TableName} WHERE OrderId=@orderId", new {orderId});
+            }
+        }
+
+        public async Task<IOrderExecutionOrderBook> GetByExternalOrderAsync(string externalOrderId)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                return await conn.QueryFirstOrDefaultAsync<OrderExecutionOrderBookEntity>(
+                    $"SELECT * FROM {TableName} WHERE ExternalOrderId=@externalOrderId", new {externalOrderId});
             }
         }
     }

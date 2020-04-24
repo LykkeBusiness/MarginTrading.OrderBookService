@@ -28,5 +28,11 @@ namespace Lykke.MarginTrading.OrderBookService.Contracts.Models
         /// </summary>
         [Key(2)]
         public ExternalOrderBookContract OrderBook { get; set; }
+        
+        /// <summary>
+        /// External order id
+        /// </summary>
+        [Key(3)]
+        public string ExternalOrderId { get; set; }
     }
 }

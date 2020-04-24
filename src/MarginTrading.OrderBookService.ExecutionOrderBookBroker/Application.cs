@@ -2,7 +2,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Common;
 using Common.Log;
@@ -11,9 +10,7 @@ using Lykke.MarginTrading.BrokerBase.Models;
 using Lykke.MarginTrading.BrokerBase.Settings;
 using Lykke.MarginTrading.OrderBookService.Contracts.Models;
 using Lykke.SlackNotifications;
-using MarginTrading.OrderBookService.Core.Domain;
 using MarginTrading.OrderBookService.Core.Repositories;
-using MarginTrading.OrderBookService.Core.Services;
 
 namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
 {
@@ -22,8 +19,6 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
         private readonly IExecutionOrderBookRepository _executionOrderBookRepository;
         private readonly ILog _log;
         private readonly Settings _settings;
-        private readonly ConcurrentDictionary<string, DateTime> _lastMessageTimes = 
-            new ConcurrentDictionary<string, DateTime>();
 
         public Application(
             IExecutionOrderBookRepository executionOrderBookRepository,
