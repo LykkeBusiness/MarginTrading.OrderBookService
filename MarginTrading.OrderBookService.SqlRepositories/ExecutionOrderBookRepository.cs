@@ -9,7 +9,6 @@ using Common;
 using Common.Log;
 using Dapper;
 using Lykke.Logs.MsSql.Extensions;
-using MarginTrading.OrderBookService.Core.Domain;
 using MarginTrading.OrderBookService.Core.Domain.Abstractions;
 using MarginTrading.OrderBookService.Core.Repositories;
 using Microsoft.Data.SqlClient;
