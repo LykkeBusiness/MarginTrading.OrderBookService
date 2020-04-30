@@ -39,10 +39,10 @@ namespace MarginTrading.OrderBookService
     [UsedImplicitly]
     public class Startup
     {
+        private IReloadingManager<AppSettings> _mtSettingsManager;
         public static string ServiceName { get; } = PlatformServices.Default.Application.ApplicationName;
-
         private IHostingEnvironment Environment { get; }
-        private IContainer ApplicationContainer { get; set; }
+        private ILifetimeScope ApplicationContainer { get; set; }
         private IConfigurationRoot Configuration { get; }
         [CanBeNull] private ILog Log { get; set; }
 
@@ -56,45 +56,36 @@ namespace MarginTrading.OrderBookService
             Environment = env;
         }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             try
             {
-                services.AddMvc()
-                    .AddJsonOptions(options =>
+                services.AddControllers()
+                    .AddNewtonsoftJson(options =>
                     {
                         options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                         options.SerializerSettings.Converters.Add(new StringEnumConverter());
                     });
 
-                var appSettings = Configuration.LoadSettings<AppSettings>();
+                _mtSettingsManager = Configuration.LoadSettings<AppSettings>();
 
-                services.AddApiKeyAuth(appSettings.CurrentValue.OrderBookServiceClient);
+                services.AddApiKeyAuth(_mtSettingsManager.CurrentValue.OrderBookServiceClient);
 
                 services.AddSwaggerGen(options =>
                 {
                     options.DefaultLykkeConfiguration("v1", ServiceName + " API");
                     options.OperationFilter<CustomOperationIdOperationFilter>();
-                    if (!string.IsNullOrWhiteSpace(appSettings.CurrentValue.OrderBookServiceClient?.ApiKey))
+                    if (!string.IsNullOrWhiteSpace(_mtSettingsManager.CurrentValue.OrderBookServiceClient?.ApiKey))
                     {
-                        options.OperationFilter<ApiKeyHeaderOperationFilter>();
+                        options.AddApiKeyAwareness();
                     }
                 });
 
-                var builder = new ContainerBuilder();
+                services.AddApplicationInsightsTelemetry();
 
-                Log = CreateLog(Configuration, services, appSettings);
+                Log = CreateLog(Configuration, services, _mtSettingsManager);
 
                 services.AddSingleton<ILoggerFactory>(x => new WebHostLoggerFactory(Log));
-
-                builder.RegisterModule(new OrderBookServiceModule(appSettings, Log));
-                builder.RegisterModule(new RedisModule(appSettings.CurrentValue.OrderBookService.Db.RedisSettings
-                    .Configuration));
-
-                builder.Populate(services);
-
-                ApplicationContainer = builder.Build();
-                return new AutofacServiceProvider(ApplicationContainer);
             }
             catch (Exception ex)
             {
@@ -102,12 +93,22 @@ namespace MarginTrading.OrderBookService
                 throw;
             }
         }
+        
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+
+            builder.RegisterModule(new OrderBookServiceModule(_mtSettingsManager, Log));
+            builder.RegisterModule(new RedisModule(_mtSettingsManager.CurrentValue.OrderBookService.Db.RedisSettings
+                .Configuration));
+        }
 
         [UsedImplicitly]
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifetime)
         {
             try
             {
+                ApplicationContainer = app.ApplicationServices.GetAutofacRoot();
+                
                 if (env.IsDevelopment())
                 {
                     app.UseDeveloperExceptionPage();
@@ -123,8 +124,13 @@ namespace MarginTrading.OrderBookService
                 app.UseLykkeMiddleware(ServiceName, ex => new ErrorResponse {ErrorMessage = "Technical problem", Details = ex.Message});
 #endif
 
+                app.UseRouting();
                 app.UseAuthentication();
-                app.UseMvc();
+                app.UseAuthorization();
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });
                 app.UseSwagger();
                 app.UseSwaggerUI(a => a.SwaggerEndpoint("/swagger/v1/swagger.json", "Main Swagger"));
 
@@ -143,7 +149,7 @@ namespace MarginTrading.OrderBookService
         {
             try
             {
-                Program.Host.WriteLogsAsync(Environment, LogLocator.Log).Wait();
+                Program.AppHost.WriteLogs(Environment, LogLocator.Log);
 
                 Log?.WriteMonitorAsync("", "", "Started").Wait();
             }
