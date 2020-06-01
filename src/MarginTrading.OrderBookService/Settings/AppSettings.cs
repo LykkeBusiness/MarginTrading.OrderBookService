@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Lykke.SettingsReader.Attributes;
 using Lykke.Snow.Common.Startup.ApiKey;
 
-namespace MarginTrading.OrderBookService.Core.Settings
+namespace MarginTrading.OrderBookService.Settings
 {
     [UsedImplicitly]
     public class AppSettings

@@ -5,10 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Common.Log;
-using Lykke.Common.Log;
 using MarginTrading.OrderBookService.Core.Domain;
 using MarginTrading.OrderBookService.Core.Services;
-using MarginTrading.OrderBookService.Core.Settings;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 
@@ -17,22 +15,22 @@ namespace MarginTrading.OrderBookService.Services
     public class OrderBooksProviderService : IOrderBooksProviderService
     {
         private readonly IDatabase _redisDatabase;
-        private readonly OrderBookServiceSettings _settings;
         private readonly ILog _log;
+        private readonly string _orderBooksCacheKeyPattern;
 
         public OrderBooksProviderService(
             IDatabase redisDatabase,
-            OrderBookServiceSettings settings, 
+            string orderBooksCacheKeyPattern,
             ILog log)
         {
             _redisDatabase = redisDatabase;
-            _settings = settings;
             _log = log;
+            _orderBooksCacheKeyPattern = orderBooksCacheKeyPattern;
         }
         
         public async Task<ExternalOrderBook> GetCurrentOrderBookAsync(string exchange, string assetPairId)
         {
-            var data = await _redisDatabase.HashGetAsync(_settings.Db.OrderBooksCacheKeyPattern, 
+            var data = await _redisDatabase.HashGetAsync(_orderBooksCacheKeyPattern, 
                 GetKey(exchange, assetPairId));
 
             if (!data.HasValue)
@@ -47,7 +45,7 @@ namespace MarginTrading.OrderBookService.Services
 
         public async Task<List<ExternalOrderBook>> GetCurrentOrderBooksAsync(string assetPairId = null)
         {
-            var data = await _redisDatabase.HashGetAllAsync(_settings.Db.OrderBooksCacheKeyPattern);
+            var data = await _redisDatabase.HashGetAllAsync(_orderBooksCacheKeyPattern);
             
             return data
                 .Select(x => Deserialize(x.Value))
