@@ -13,22 +13,20 @@ using Lykke.Logs;
 using Lykke.Logs.MsSql;
 using Lykke.Logs.MsSql.Repositories;
 using Lykke.Logs.Serilog;
-using Lykke.MarginTrading.OrderBookService.Contracts.Api;
 using Lykke.SettingsReader;
 using Lykke.Snow.Common.Startup;
 using Lykke.Snow.Common.Startup.ApiKey;
 using Lykke.Snow.Common.Startup.Hosting;
 using Lykke.Snow.Common.Startup.Log;
 using MarginTrading.OrderBookService.Core.Modules;
-using MarginTrading.OrderBookService.Core.Services;
-using MarginTrading.OrderBookService.Core.Settings;
 using MarginTrading.OrderBookService.Infrastructure;
 using MarginTrading.OrderBookService.Modules;
 using MarginTrading.OrderBookService.Services;
+using MarginTrading.OrderBookService.Settings;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json.Converters;
@@ -41,12 +39,12 @@ namespace MarginTrading.OrderBookService
     {
         private IReloadingManager<AppSettings> _mtSettingsManager;
         public static string ServiceName { get; } = PlatformServices.Default.Application.ApplicationName;
-        private IHostingEnvironment Environment { get; }
+        private IHostEnvironment Environment { get; }
         private ILifetimeScope ApplicationContainer { get; set; }
         private IConfigurationRoot Configuration { get; }
         [CanBeNull] private ILog Log { get; set; }
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostEnvironment env)
         {
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -94,6 +92,7 @@ namespace MarginTrading.OrderBookService
             }
         }
         
+        [UsedImplicitly]
         public void ConfigureContainer(ContainerBuilder builder)
         {
 
@@ -103,7 +102,7 @@ namespace MarginTrading.OrderBookService
         }
 
         [UsedImplicitly]
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifetime)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env, IHostApplicationLifetime appLifetime)
         {
             try
             {

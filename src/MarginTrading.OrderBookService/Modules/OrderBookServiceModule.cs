@@ -9,9 +9,9 @@ using Lykke.Common.Chaos;
 using Lykke.SettingsReader;
 using MarginTrading.OrderBookService.Core.Repositories;
 using MarginTrading.OrderBookService.Core.Services;
-using MarginTrading.OrderBookService.Core.Settings;
 using MarginTrading.OrderBookService.Services;
 using MarginTrading.OrderBookService.SqlRepositories;
+using MarginTrading.OrderBookService.Settings;
 using Microsoft.Extensions.Internal;
 using StackExchange.Redis;
 
@@ -64,15 +64,18 @@ namespace MarginTrading.OrderBookService.Modules
 
         private void RegisterServices(ContainerBuilder builder)
         {
-            builder.RegisterType<OrderBooksProviderService>().As<IOrderBooksProviderService>().SingleInstance();
+            builder.RegisterType<OrderBooksProviderService>()
+                .WithParameter(TypedParameter.From(_settings.CurrentValue.OrderBookService.Db.OrderBooksCacheKeyPattern))
+                .As<IOrderBooksProviderService>()
+                .SingleInstance();
             
-            builder.RegisterType<ExecutionOrderBooksProviderService>().As<IExecutionOrderBooksProviderService>().SingleInstance();
+            builder.RegisterType<ExecutionOrderBooksProviderService>()
+                .As<IExecutionOrderBooksProviderService>()
+                .SingleInstance();
             
             builder.RegisterType<ConvertService>()
                 .As<IConvertService>()
                 .SingleInstance();
-            
-            
         }
 
         private void RegisterRedis(ContainerBuilder builder)
