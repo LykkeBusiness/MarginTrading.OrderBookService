@@ -8,8 +8,7 @@ using Lykke.MarginTrading.BrokerBase;
 using Lykke.MarginTrading.BrokerBase.Settings;
 using Lykke.SettingsReader;
 using MarginTrading.OrderBookService.Core.Modules;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Internal;
 
 namespace MarginTrading.OrderBookService.OrderBookBroker
@@ -17,7 +16,7 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
     [UsedImplicitly]
     public class Startup : BrokerStartupBase<DefaultBrokerApplicationSettings<Settings>, Settings>
     {
-        public Startup(IHostingEnvironment env) : base(env)
+        public Startup(IHostEnvironment env) : base(env)
         {
         }
 

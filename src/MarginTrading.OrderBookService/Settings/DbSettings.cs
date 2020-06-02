@@ -4,7 +4,7 @@
 using JetBrains.Annotations;
 using Lykke.SettingsReader.Attributes;
 
-namespace MarginTrading.OrderBookService.Core.Settings
+namespace MarginTrading.OrderBookService.Settings
 {
     [UsedImplicitly]
     public class DbSettings

@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Lykke.Common.Chaos;
 using Lykke.SettingsReader.Attributes;
 
-namespace MarginTrading.OrderBookService.Core.Settings
+namespace MarginTrading.OrderBookService.Settings
 {
     [UsedImplicitly]
     public class OrderBookServiceSettings
