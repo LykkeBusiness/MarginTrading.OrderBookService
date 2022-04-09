@@ -7,9 +7,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AsyncFriendlyStackTrace" Version="1.6.0" />
+    <PackageReference Include="LykkeBiz.HttpClientGenerator" Version="4.5.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Refit" Version="5.1.27" />
-    <PackageReference Include="Lykke.HttpClientGenerator" Version="3.0.0" />
+    <PackageReference Include="Refit" Version="5.2.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\MarginTrading.OrderBookService.Contracts\MarginTrading.OrderBookService.Contracts.csproj" />
