@@ -20,9 +20,6 @@ namespace MarginTrading.OrderBookService.Core.Modules
             builder.Register(c => ConnectionMultiplexer.Connect(_redisConfiguration))
                 .As<IConnectionMultiplexer>()
                 .SingleInstance();
-
-            builder.Register(c => c.Resolve<IConnectionMultiplexer>().GetDatabase())
-                .As<IDatabase>();
         }
     }
 }
