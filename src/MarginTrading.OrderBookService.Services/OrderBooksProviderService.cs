@@ -14,23 +14,23 @@ namespace MarginTrading.OrderBookService.Services
 {
     public class OrderBooksProviderService : IOrderBooksProviderService
     {
-        private readonly IDatabase _redisDatabase;
         private readonly ILog _log;
         private readonly string _orderBooksCacheKeyPattern;
+        private readonly IConnectionMultiplexer _redis;
 
         public OrderBooksProviderService(
-            IDatabase redisDatabase,
             string orderBooksCacheKeyPattern,
-            ILog log)
+            ILog log,
+            IConnectionMultiplexer redis)
         {
-            _redisDatabase = redisDatabase;
             _log = log;
+            _redis = redis;
             _orderBooksCacheKeyPattern = orderBooksCacheKeyPattern;
         }
         
         public async Task<ExternalOrderBook> GetCurrentOrderBookAsync(string exchange, string assetPairId)
         {
-            var data = await _redisDatabase.HashGetAsync(_orderBooksCacheKeyPattern, 
+            var data = await _redis.GetDatabase().HashGetAsync(_orderBooksCacheKeyPattern, 
                 GetKey(exchange, assetPairId));
 
             if (!data.HasValue)
@@ -45,7 +45,7 @@ namespace MarginTrading.OrderBookService.Services
 
         public async Task<List<ExternalOrderBook>> GetCurrentOrderBooksAsync(string assetPairId = null)
         {
-            var data = await _redisDatabase.HashGetAllAsync(_orderBooksCacheKeyPattern);
+            var data = await _redis.GetDatabase().HashGetAllAsync(_orderBooksCacheKeyPattern);
             
             return data
                 .Select(x => Deserialize(x.Value))
