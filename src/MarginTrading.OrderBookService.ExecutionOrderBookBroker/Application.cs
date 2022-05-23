@@ -11,6 +11,8 @@ using Lykke.MarginTrading.BrokerBase.Settings;
 using Lykke.MarginTrading.OrderBookService.Contracts.Models;
 using Lykke.SlackNotifications;
 using MarginTrading.OrderBookService.Core.Repositories;
+using Polly;
+using Polly.Retry;
 
 namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
 {
@@ -19,6 +21,8 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
         private readonly IExecutionOrderBookRepository _executionOrderBookRepository;
         private readonly ILog _log;
         private readonly Settings _settings;
+
+        private AsyncRetryPolicy _retryPolicy;
 
         public Application(
             IExecutionOrderBookRepository executionOrderBookRepository,
@@ -31,6 +35,21 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
             _executionOrderBookRepository = executionOrderBookRepository;
             _log = logger;
             _settings = settings;
+            
+            _retryPolicy = Policy
+                .Handle<Exception>()
+                .WaitAndRetryAsync(new[]
+                {
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(2),
+                    TimeSpan.FromSeconds(4),
+                    TimeSpan.FromSeconds(8),
+                }, onRetry: (exception, timespan, retryCount, context) =>
+                {
+                    _log.WriteWarningAsync(nameof(ExecutionOrderBookBroker), nameof(HandleMessage),
+                        $"Cannot save orderBookMessage with order id {context["id"]}, external order id {context["externalOrderId"]}, retryCount {retryCount}",
+                        exception);
+                });
         }
 
         protected override BrokerSettingsBase Settings => _settings;
@@ -45,7 +64,12 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
             {
                 try
                 {
-                    await _executionOrderBookRepository.AddAsync(orderBook);
+                    await _retryPolicy.ExecuteAsync((context) => _executionOrderBookRepository.AddAsync(orderBook),
+                        new Context()
+                        {
+                            {"id", orderBookMessage.OrderId},
+                            {"externalOrderId", orderBookMessage.ExternalOrderId}
+                        });
                 }
                 catch (Exception ex)
                 {

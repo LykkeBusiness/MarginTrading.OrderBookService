@@ -78,7 +78,7 @@ INDEX IX_{0}_Base (OrderId)
                     
                     _log?.WriteWarning(nameof(ExecutionOrderBookRepository), nameof(AddAsync), msg);
                     
-                    throw new Exception(msg);
+                    throw new Exception(msg, ex);
                 }
             }
         }
