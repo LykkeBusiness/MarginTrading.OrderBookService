@@ -84,9 +84,6 @@ namespace MarginTrading.OrderBookService.Modules
                     _settings.CurrentValue.OrderBookService.Db.RedisSettings.Configuration))
                 .As<IConnectionMultiplexer>()
                 .SingleInstance();
-
-            builder.Register(c => c.Resolve<IConnectionMultiplexer>().GetDatabase())
-                .As<IDatabase>();
         }
     }
 }
