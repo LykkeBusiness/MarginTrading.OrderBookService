@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AsyncFriendlyStackTrace;
 using JetBrains.Annotations;
 using Lykke.HttpClientGenerator;
+using MoreLinq;
 using Newtonsoft.Json;
 using Refit;
 
