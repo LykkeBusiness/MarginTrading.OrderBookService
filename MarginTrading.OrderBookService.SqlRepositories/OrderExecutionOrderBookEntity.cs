@@ -16,6 +16,8 @@ namespace MarginTrading.OrderBookService.SqlRepositories
         
         public decimal Spread { get; set; }
         
+        public decimal Volume { get; set; }
+        
         ExternalOrderBook IOrderExecutionOrderBook.OrderBook => new ExternalOrderBook
         {
             ExchangeName = ExchangeName,
@@ -23,6 +25,7 @@ namespace MarginTrading.OrderBookService.SqlRepositories
             Timestamp = Timestamp,
             Asks = JsonConvert.DeserializeObject<List<VolumePrice>>(Asks),
             Bids = JsonConvert.DeserializeObject<List<VolumePrice>>(Bids),
+            ReceiveTimestamp = ReceiveTimestamp
         };
 
         public string ExternalOrderId { get; set; }
@@ -32,6 +35,8 @@ namespace MarginTrading.OrderBookService.SqlRepositories
         public string AssetPairId { get; set; }
 
         public DateTime Timestamp { get; set; }
+        
+        public DateTime ReceiveTimestamp { get; set; }
 
         public string Asks { get; set; }
 
@@ -49,6 +54,8 @@ namespace MarginTrading.OrderBookService.SqlRepositories
                 Timestamp = orderBook.OrderBook.Timestamp,
                 Asks = orderBook.OrderBook.Asks.ToJson(),
                 Bids = orderBook.OrderBook.Bids.ToJson(),
+                Volume = orderBook.Volume,
+                ReceiveTimestamp = orderBook.OrderBook.ReceiveTimestamp
             };
         }
     }

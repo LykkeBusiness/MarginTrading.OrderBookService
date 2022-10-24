@@ -1,4 +1,22 @@
-## 1.4.5 (TBD)
+## (TBD)
+
+* LT-4230: Issue with orderbook (fields - ReceiveTimestamp and Volume)
+
+### Deployment
+
+The following sql script has to be executed against database:
+
+```sql
+ALTER TABLE dbo.ExecutionOrderBooks
+    ADD Volume float NOT NULL default 0
+GO
+
+ALTER TABLE dbo.ExecutionOrderBooks
+    ADD ReceiveTimestamp datetime
+GO
+```
+
+## 1.4.5
 
 * LT-2217: Save execution order book linked to external order id, not internal.
 
