@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2019 Lykke Corp.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using Autofac;
 using Common.Log;
 using Lykke.Common;
@@ -71,10 +70,6 @@ namespace MarginTrading.OrderBookService.Modules
             
             builder.RegisterType<ExecutionOrderBooksProviderService>()
                 .As<IExecutionOrderBooksProviderService>()
-                .SingleInstance();
-            
-            builder.RegisterType<ConvertService>()
-                .As<IConvertService>()
                 .SingleInstance();
         }
 
