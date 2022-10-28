@@ -1,15 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Version>2.0.1</Version>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="7.0.1" />
-    <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
-    <PackageReference Include="Lykke.Common" Version="7.5.0" />
-    <PackageReference Include="Lykke.RabbitMqBroker" Version="7.13.2" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+    <PackageReference Include="Lykke.Common" Version="7.6.0" />
+    <PackageReference Include="Lykke.RabbitMqBroker" Version="7.14.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="StackExchange.Redis" Version="2.1.30" />
+    <PackageReference Include="StackExchange.Redis" Version="2.6.66" />
   </ItemGroup>
 </Project>
