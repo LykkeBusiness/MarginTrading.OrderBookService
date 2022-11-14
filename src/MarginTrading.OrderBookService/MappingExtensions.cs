@@ -38,6 +38,7 @@ namespace MarginTrading.OrderBookService
                 OrderId = orderBook.OrderId,
                 ExternalOrderId = orderBook.ExternalOrderId,
                 OrderBook = orderBook.OrderBook.ToContract(),
+                Volume = orderBook.Volume
             };
         }
 

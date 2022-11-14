@@ -24,7 +24,9 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
                     Timestamp = contract.OrderBook.Timestamp,
                     Asks = contract.OrderBook.Asks.Select(x => new VolumePrice{ Volume = x.Volume, Price = x.Price}).ToList(),
                     Bids = contract.OrderBook.Bids.Select(x => new VolumePrice{ Volume = x.Volume, Price = x.Price}).ToList(),
+                    ReceiveTimestamp = contract.OrderBook.ReceiveTimestamp
                 },
+                Volume = contract.Volume
             };
 
             orderBook.Spread = SpreadCalculator.CalculateSpread(orderBook, contract.Volume);

@@ -11,6 +11,8 @@ namespace MarginTrading.OrderBookService.Core.Domain
         
         public decimal Spread { get; set; }
         
+        public decimal Volume { get; set; }
+
         public ExternalOrderBook OrderBook { get; set; }
         
         public string ExternalOrderId { get; set; }
