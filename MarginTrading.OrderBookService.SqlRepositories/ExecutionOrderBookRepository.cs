@@ -19,8 +19,8 @@ namespace MarginTrading.OrderBookService.SqlRepositories
     {
         private const string TableName = "ExecutionOrderBooks";
 
-        private const string CreateTableScript = "CREATE TABLE [{0}](" +
-                                                 @"[OID] [bigint] NOT NULL IDENTITY (1,1),
+        private const string CreateTableScript = @"
+CREATE TABLE [{0}]([OID] [bigint] NOT NULL IDENTITY (1,1),
 [OrderId] [nvarchar](128) NOT NULL,
 [ExternalOrderId] [nvarchar](128) NULL,
 [Spread] [float] NOT NULL,
@@ -29,6 +29,8 @@ namespace MarginTrading.OrderBookService.SqlRepositories
 [Timestamp] [datetime] NOT NULL,
 [Asks] [nvarchar](MAX) NOT NULL,
 [Bids] [nvarchar](MAX) NOT NULL,
+[Volume] [float] default 0 NOT NULL,
+[ReceiveTimestamp] [datetime2],
 INDEX IX_{0}_Base (OrderId)
 );";
         
@@ -41,8 +43,10 @@ INDEX IX_{0}_Base (OrderId)
 
         private static readonly string GetFields = string.Join(",", Properties.Select(x => "@" + x.Name));
 
-        private static readonly string GetUpdateClause = string.Join(",",
-            Properties.Select(x => "[" + x.Name + "]=@" + x.Name));
+        static ExecutionOrderBookRepository()
+        {
+            SqlMapper.AddTypeMap(typeof(DateTime), System.Data.DbType.DateTime2);
+        }
 
         public ExecutionOrderBookRepository(string connectionString, ILog log)
         {
