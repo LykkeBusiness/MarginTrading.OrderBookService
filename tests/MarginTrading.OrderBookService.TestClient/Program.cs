@@ -3,7 +3,6 @@
 
 using System;
 using System.Threading.Tasks;
-using AsyncFriendlyStackTrace;
 using JetBrains.Annotations;
 using Lykke.HttpClientGenerator;
 using MoreLinq;
@@ -35,7 +34,7 @@ namespace MarginTrading.OrderBookService.TestClient
                 }
 
                 Console.WriteLine(str);
-                Console.WriteLine(e.ToAsyncString());
+                Console.WriteLine(e.ToString());
             }
         }
 
