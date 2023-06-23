@@ -6,7 +6,6 @@
     <Version>1.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AsyncFriendlyStackTrace" Version="1.6.0" />
     <PackageReference Include="Lykke.Snow.Common" Version="1.52.0" />
     <PackageReference Include="LykkeBiz.HttpClientGenerator" Version="5.0.1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="4.1.1" />
