@@ -34,19 +34,15 @@ create table ExecutionOrderBooks
     Volume           float default 0 not null,
     ReceiveTimestamp datetime2
 )
-go
 
 create index IX_ExecutionOrderBooks_Base
     on ExecutionOrderBooks (OrderId) include (Spread)
-go
 
 create index IX_ExecutionOrderBooks_ExternalOrderId
     on ExecutionOrderBooks (ExternalOrderId) include (Spread)
-go
 
 create unique index IX_ExecutionOrderBooks_OrderId
     on ExecutionOrderBooks (OrderId)
-go
 ";
         
         private readonly string _connectionString;
