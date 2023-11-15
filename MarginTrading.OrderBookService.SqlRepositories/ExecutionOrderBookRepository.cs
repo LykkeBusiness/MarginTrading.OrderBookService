@@ -20,19 +20,30 @@ namespace MarginTrading.OrderBookService.SqlRepositories
         private const string TableName = "ExecutionOrderBooks";
 
         private const string CreateTableScript = @"
-CREATE TABLE [{0}]([OID] [bigint] NOT NULL IDENTITY (1,1),
-[OrderId] [nvarchar](128) NOT NULL,
-[ExternalOrderId] [nvarchar](128) NULL,
-[Spread] [float] NOT NULL,
-[ExchangeName] [nvarchar](64) NOT NULL,
-[AssetPairId] [nvarchar](64) NOT NULL,
-[Timestamp] [datetime] NOT NULL,
-[Asks] [nvarchar](MAX) NOT NULL,
-[Bids] [nvarchar](MAX) NOT NULL,
-[Volume] [float] default 0 NOT NULL,
-[ReceiveTimestamp] [datetime2],
-INDEX IX_{0}_Base (OrderId)
-);";
+create table ExecutionOrderBooks
+(
+    OID              bigint identity,
+    OrderId          nvarchar(128)   not null,
+    ExchangeName     nvarchar(64)    not null,
+    AssetPairId      nvarchar(64)    not null,
+    Timestamp        datetime        not null,
+    Asks             nvarchar(max)   not null,
+    Bids             nvarchar(max)   not null,
+    Spread           float default 0 not null,
+    ExternalOrderId  nvarchar(128),
+    Volume           float default 0 not null,
+    ReceiveTimestamp datetime2
+)
+
+create index IX_ExecutionOrderBooks_Base
+    on ExecutionOrderBooks (OrderId) include (Spread)
+
+create index IX_ExecutionOrderBooks_ExternalOrderId
+    on ExecutionOrderBooks (ExternalOrderId) include (Spread)
+
+create unique index IX_ExecutionOrderBooks_OrderId
+    on ExecutionOrderBooks (OrderId)
+";
         
         private readonly string _connectionString;
         private readonly ILog _log;
@@ -66,24 +77,22 @@ INDEX IX_{0}_Base (OrderId)
 
         public async Task AddAsync(IOrderExecutionOrderBook orderBook)
         {
-            using (var conn = new SqlConnection(_connectionString))
+            await using var conn = new SqlConnection(_connectionString);
+            var entity = OrderExecutionOrderBookEntity.Create(orderBook);
+            var sql = $"insert into {TableName} ({GetColumns}) values ({GetFields})";
+            try
             {
-                try
-                {
-                    var entity = OrderExecutionOrderBookEntity.Create(orderBook);
-                    var sql = $"insert into {TableName} ({GetColumns}) values ({GetFields})";
-                    await conn.ExecuteAsync(sql, entity);
-                }
-                catch (Exception ex)
-                {
-                    var msg = $"Error {ex.Message} \n" +
-                              $"Entity <{nameof(OrderExecutionOrderBookEntity)}>: \n" +
-                              orderBook.ToJson();
+                await conn.ExecuteAsync(sql, entity);
+            }
+            catch (Exception ex)
+            {
+                var msg = $"Error {ex.Message} \n" +
+                          $"Entity <{nameof(OrderExecutionOrderBookEntity)}>: \n" +
+                          orderBook.ToJson();
                     
-                    _log?.WriteWarning(nameof(ExecutionOrderBookRepository), nameof(AddAsync), msg);
-                    
-                    throw new Exception(msg, ex);
-                }
+                _log?.WriteWarning(nameof(ExecutionOrderBookRepository), nameof(AddAsync), msg);
+
+                throw;
             }
         }
 
