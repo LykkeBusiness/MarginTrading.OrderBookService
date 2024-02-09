@@ -1,3 +1,8 @@
+## 2.3.1 - Nova 2. Delivery 39. Hotfix 2 (February 7, 2024)
+### What's changed
+* LT-5245: Update vulnerable packages
+
+
 ## 2.3.0 - Nova 2. Delivery 39 (January 30, 2024)
 ### What's changed
 * LT-5145: Changelog.md for orderbook service.

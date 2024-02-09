@@ -3,7 +3,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <NoWarn>$(NoWarn);1591</NoWarn>
-    <Version>2.3.0</Version>
+    <Version>2.3.1</Version>
     <AssemblyName>MarginTrading.OrderBookService</AssemblyName>
     <RootNamespace>MarginTrading.OrderBookService</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -57,19 +57,25 @@
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables"
+      Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"
+      Version="6.0.0" />
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="StackExchange.Redis" Version="2.6.66" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MarginTrading.OrderBookService.SqlRepositories\MarginTrading.OrderBookService.SqlRepositories.csproj" />
-    <ProjectReference Include="..\MarginTrading.OrderBookService.Contracts\MarginTrading.OrderBookService.Contracts.csproj" />
-    <ProjectReference Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
-    <ProjectReference Include="..\MarginTrading.OrderBookService.Services\MarginTrading.OrderBookService.Services.csproj" />
+    <ProjectReference
+      Include="..\..\MarginTrading.OrderBookService.SqlRepositories\MarginTrading.OrderBookService.SqlRepositories.csproj" />
+    <ProjectReference
+      Include="..\MarginTrading.OrderBookService.Contracts\MarginTrading.OrderBookService.Contracts.csproj" />
+    <ProjectReference
+      Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
+    <ProjectReference
+      Include="..\MarginTrading.OrderBookService.Services\MarginTrading.OrderBookService.Services.csproj" />
   </ItemGroup>
 </Project>
