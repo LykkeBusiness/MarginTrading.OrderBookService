@@ -5,13 +5,15 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Common;
-using Common.Log;
+
 using Lykke.MarginTrading.BrokerBase;
-using Lykke.MarginTrading.BrokerBase.Models;
+using Lykke.MarginTrading.BrokerBase.Messaging;
 using Lykke.MarginTrading.BrokerBase.Settings;
-using Lykke.SlackNotifications;
+using Lykke.Snow.Common.Correlation.RabbitMq;
+
 using MarginTrading.OrderbookAggregator.Contracts.Messages;
 using Microsoft.Extensions.Internal;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
 namespace MarginTrading.OrderBookService.OrderBookBroker
@@ -19,22 +21,25 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
     public class Application : BrokerApplicationBase<ExternalExchangeOrderbookMessage>
     {
         private readonly ISystemClock _systemClock;
-        private readonly ILog _log;
         private readonly Settings _settings;
         private readonly ConcurrentDictionary<string, DateTime> _lastMessageTimes = new ConcurrentDictionary<string, DateTime>();
         private readonly IConnectionMultiplexer _redis;
 
         public Application(
+            RabbitMqCorrelationManager correlationManager,
             ISystemClock systemClock,
-            ILog logger,
-            Settings settings, 
+            Settings settings,
             CurrentApplicationInfo applicationInfo,
-            ISlackNotificationsSender slackNotificationsSender,
-            IConnectionMultiplexer redis) 
-        : base(logger, slackNotificationsSender, applicationInfo, MessageFormat.MessagePack)
+            IConnectionMultiplexer redis,
+            IMessagingComponentFactory<ExternalExchangeOrderbookMessage> messagingComponentFactory,
+            ILoggerFactory loggerFactory)
+            : base(
+                correlationManager,
+                loggerFactory,
+                applicationInfo,
+                messagingComponentFactory)
         {
             _systemClock = systemClock;
-            _log = logger;
             _settings = settings;
             _redis = redis;
         }
@@ -76,7 +81,7 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
                 }
                 catch (Exception ex)
                 {
-                    await _log.WriteErrorAsync(nameof(OrderBookBroker), nameof(HandleMessageWithoutThrottling), "SwitchThread", ex);
+                    Logger.LogError(ex, "Failed to save order book to cache");
                 }
             });
         }
