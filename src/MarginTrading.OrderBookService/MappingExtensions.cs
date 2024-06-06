@@ -13,11 +13,6 @@ namespace MarginTrading.OrderBookService
     [UsedImplicitly]
     public static class MappingExtensions
     {
-        internal static List<ExternalOrderBookContract> ToContracts(this List<ExternalOrderBook> orderBooks)
-        {
-            return orderBooks.Select(x => x.ToContract()).ToList();
-        }
-        
         internal static ExternalOrderBookContract ToContract(this ExternalOrderBook orderBook)
         {
             return new ExternalOrderBookContract
@@ -42,7 +37,7 @@ namespace MarginTrading.OrderBookService
             };
         }
 
-        internal static List<VolumePriceContract> ToContracts(this List<VolumePrice> volumePrices)
+        private static List<VolumePriceContract> ToContracts(this List<VolumePrice> volumePrices)
         {
             return volumePrices.Select(x => new VolumePriceContract
             {
