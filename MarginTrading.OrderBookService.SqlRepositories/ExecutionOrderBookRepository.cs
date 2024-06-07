@@ -6,12 +6,12 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Common;
-using Common.Log;
 using Dapper;
 using Lykke.Logs.MsSql.Extensions;
 using MarginTrading.OrderBookService.Core.Domain.Abstractions;
 using MarginTrading.OrderBookService.Core.Repositories;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Logging;
 
 namespace MarginTrading.OrderBookService.SqlRepositories
 {
@@ -20,7 +20,7 @@ namespace MarginTrading.OrderBookService.SqlRepositories
         private const string TableName = "ExecutionOrderBooks";
 
         private const string CreateTableScript = @"
-create table ExecutionOrderBooks
+create table {0}
 (
     OID              bigint identity,
     OrderId          nvarchar(128)   not null,
@@ -36,17 +36,17 @@ create table ExecutionOrderBooks
 )
 
 create index IX_ExecutionOrderBooks_Base
-    on ExecutionOrderBooks (OrderId) include (Spread)
+    on {0} (OrderId) include (Spread)
 
 create index IX_ExecutionOrderBooks_ExternalOrderId
-    on ExecutionOrderBooks (ExternalOrderId) include (Spread)
+    on {0} (ExternalOrderId) include (Spread)
 
 create unique index IX_ExecutionOrderBooks_OrderId
-    on ExecutionOrderBooks (OrderId)
+    on {0} (OrderId)
 ";
         
         private readonly string _connectionString;
-        private readonly ILog _log;
+        private readonly ILogger<ExecutionOrderBookRepository> _logger;
 
         private static readonly PropertyInfo[] Properties = typeof(OrderExecutionOrderBookEntity).GetProperties();
 
@@ -59,19 +59,20 @@ create unique index IX_ExecutionOrderBooks_OrderId
             SqlMapper.AddTypeMap(typeof(DateTime), System.Data.DbType.DateTime2);
         }
 
-        public ExecutionOrderBookRepository(string connectionString, ILog log)
+        public ExecutionOrderBookRepository(string connectionString, ILogger<ExecutionOrderBookRepository> logger)
         {
             _connectionString = connectionString;
-            _log = log;
-            
-            using (var conn = new SqlConnection(connectionString))
+            _logger = logger;
+
+            using var conn = new SqlConnection(connectionString);
+            try
             {
-                try { conn.CreateTableIfDoesntExists(CreateTableScript, TableName); }
-                catch (Exception ex)
-                {
-                    _log?.WriteErrorAsync(TableName, "CreateTableIfDoesntExists", null, ex);
-                    throw;
-                }
+                conn.CreateTableIfDoesntExists(CreateTableScript, TableName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error on table [{TableName}] creation", TableName);
+                throw;
             }
         }
 
@@ -89,29 +90,23 @@ create unique index IX_ExecutionOrderBooks_OrderId
                 var msg = $"Error {ex.Message} \n" +
                           $"Entity <{nameof(OrderExecutionOrderBookEntity)}>: \n" +
                           orderBook.ToJson();
-                    
-                _log?.WriteWarning(nameof(ExecutionOrderBookRepository), nameof(AddAsync), msg);
-
+                _logger.LogWarning(msg);
                 throw;
             }
         }
 
         public async Task<IOrderExecutionOrderBook> GetAsync(string orderId)
         {
-            using (var conn = new SqlConnection(_connectionString))
-            {
-                return await conn.QueryFirstOrDefaultAsync<OrderExecutionOrderBookEntity>(
-                    $"SELECT * FROM {TableName} WHERE OrderId=@orderId", new {orderId});
-            }
+            await using var conn = new SqlConnection(_connectionString);
+            return await conn.QueryFirstOrDefaultAsync<OrderExecutionOrderBookEntity>(
+                $"SELECT * FROM {TableName} WHERE OrderId=@orderId", new {orderId});
         }
 
         public async Task<IOrderExecutionOrderBook> GetByExternalOrderAsync(string externalOrderId)
         {
-            using (var conn = new SqlConnection(_connectionString))
-            {
-                return await conn.QueryFirstOrDefaultAsync<OrderExecutionOrderBookEntity>(
-                    $"SELECT * FROM {TableName} WHERE ExternalOrderId=@externalOrderId", new {externalOrderId});
-            }
+            await using var conn = new SqlConnection(_connectionString);
+            return await conn.QueryFirstOrDefaultAsync<OrderExecutionOrderBookEntity>(
+                $"SELECT * FROM {TableName} WHERE ExternalOrderId=@externalOrderId", new {externalOrderId});
         }
     }
 }
