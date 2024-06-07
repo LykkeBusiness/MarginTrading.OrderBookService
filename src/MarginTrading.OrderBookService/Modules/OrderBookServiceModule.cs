@@ -49,15 +49,12 @@ namespace MarginTrading.OrderBookService.Modules
 
         private void RegisterRepositories(ContainerBuilder builder)
         {
-            if (_settings.CurrentValue.OrderBookService.Db.StorageMode == StorageMode.Azure)
+            if (_settings.CurrentValue.OrderBookService.Db.StorageMode == StorageMode.SqlServer)
             {
-                //todo implement azure repos before using
-            }
-            else if (_settings.CurrentValue.OrderBookService.Db.StorageMode == StorageMode.SqlServer)
-            {
-                builder.RegisterInstance(new ExecutionOrderBookRepository(
-                        _settings.CurrentValue.OrderBookService.Db.DataConnString, _log))
-                    .As<IExecutionOrderBookRepository>();
+                builder.RegisterType<ExecutionOrderBookRepository>()
+                    .WithParameter(TypedParameter.From(_settings.CurrentValue.OrderBookService.Db.DataConnString))
+                    .As<IExecutionOrderBookRepository>()
+                    .SingleInstance();
             }
         }
 
