@@ -41,7 +41,6 @@
     <ItemGroup>
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0"/>
         <PackageReference Include="Lykke.Common.ApiLibrary" Version="3.1.1"/>
-        <PackageReference Include="Lykke.Logs" Version="7.4.0"/>
         <PackageReference Include="Lykke.Logs.MsSql" Version="2.2.0"/>
         <PackageReference Include="Lykke.Logs.Serilog" Version="2.3.0"/>
         <PackageReference Include="Lykke.Snow.Common.Startup" Version="3.15.0"/>
