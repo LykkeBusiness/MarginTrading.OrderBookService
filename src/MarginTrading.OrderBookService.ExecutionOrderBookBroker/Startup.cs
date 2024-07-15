@@ -2,14 +2,16 @@
 // See the LICENSE file in the project root for more information.
 
 using Autofac;
-using Common.Log;
 using JetBrains.Annotations;
 using Lykke.MarginTrading.BrokerBase;
 using Lykke.MarginTrading.BrokerBase.Models;
 using Lykke.MarginTrading.BrokerBase.Settings;
+using Lykke.MarginTrading.OrderBookService.Contracts.Models;
 using Lykke.SettingsReader;
 using MarginTrading.OrderBookService.Core.Repositories;
 using MarginTrading.OrderBookService.SqlRepositories;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
@@ -17,26 +19,24 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
     [UsedImplicitly]
     public class Startup : BrokerStartupBase<DefaultBrokerApplicationSettings<Settings>, Settings>
     {
-        public Startup(IHostEnvironment env) : base(env)
+        public Startup(IHostEnvironment env, IConfiguration configuration) : base(env, configuration)
         {
         }
 
         protected override string ApplicationName => "ExecutionOrderBookBroker";
 
         protected override void RegisterCustomServices(ContainerBuilder builder, 
-            IReloadingManager<Settings> settings, ILog log)
+            IReloadingManager<Settings> settings)
         {
+            builder.AddMessagePackBrokerMessagingFactory<OrderExecutionOrderBookContract>();
             builder.RegisterType<Application>().As<IBrokerApplication>().SingleInstance();
             
-            if (settings.CurrentValue.Db.StorageMode == StorageMode.Azure)
+            if (settings.CurrentValue.Db.StorageMode == StorageMode.SqlServer)
             {
-                //todo implement azure repos before using
-            }
-            else if (settings.CurrentValue.Db.StorageMode == StorageMode.SqlServer)
-            {
-                builder.RegisterInstance(new ExecutionOrderBookRepository(
-                        settings.CurrentValue.Db.ConnString, log))
-                    .As<IExecutionOrderBookRepository>();
+                builder.RegisterType<ExecutionOrderBookRepository>()
+                    .WithParameter(TypedParameter.From(settings.CurrentValue.Db.ConnString))
+                    .As<IExecutionOrderBookRepository>()
+                    .SingleInstance();
             }
         }
     }

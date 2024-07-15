@@ -4,13 +4,16 @@
 using System;
 using System.Threading.Tasks;
 using Common;
-using Common.Log;
 using Lykke.MarginTrading.BrokerBase;
-using Lykke.MarginTrading.BrokerBase.Models;
+using Lykke.MarginTrading.BrokerBase.Messaging;
 using Lykke.MarginTrading.BrokerBase.Settings;
 using Lykke.MarginTrading.OrderBookService.Contracts.Models;
-using Lykke.SlackNotifications;
+using Lykke.Snow.Common.Correlation.RabbitMq;
+
 using MarginTrading.OrderBookService.Core.Repositories;
+
+using Microsoft.Extensions.Logging;
+
 using Polly;
 using Polly.Retry;
 
@@ -19,37 +22,47 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
     public class Application : BrokerApplicationBase<OrderExecutionOrderBookContract>
     {
         private readonly IExecutionOrderBookRepository _executionOrderBookRepository;
-        private readonly ILog _log;
         private readonly Settings _settings;
-
-        private AsyncRetryPolicy _retryPolicy;
+        private readonly AsyncRetryPolicy _retryPolicy;
 
         public Application(
+            RabbitMqCorrelationManager correlationManager,
             IExecutionOrderBookRepository executionOrderBookRepository,
-            ILog logger,
-            Settings settings, 
+            Settings settings,
             CurrentApplicationInfo applicationInfo,
-            ISlackNotificationsSender slackNotificationsSender) 
-        : base(logger, slackNotificationsSender, applicationInfo, MessageFormat.MessagePack)
+            IMessagingComponentFactory<OrderExecutionOrderBookContract> messagingComponentFactory,
+            ILoggerFactory loggerFactory
+        )
+            : base(
+                correlationManager,
+                loggerFactory,
+                applicationInfo,
+                messagingComponentFactory)
         {
             _executionOrderBookRepository = executionOrderBookRepository;
-            _log = logger;
             _settings = settings;
-            
+
             _retryPolicy = Policy
                 .Handle<Exception>()
-                .WaitAndRetryAsync(new[]
-                {
-                    TimeSpan.FromSeconds(1),
-                    TimeSpan.FromSeconds(2),
-                    TimeSpan.FromSeconds(4),
-                    TimeSpan.FromSeconds(8),
-                }, onRetry: (exception, timespan, retryCount, context) =>
-                {
-                    _log.WriteWarningAsync(nameof(ExecutionOrderBookBroker), nameof(HandleMessage),
-                        $"Cannot save orderBookMessage with order id {context["id"]}, external order id {context["externalOrderId"]}, retryCount {retryCount}",
-                        exception);
-                });
+                .WaitAndRetryAsync(
+                    new[]
+                    {
+                        TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(4),
+                        TimeSpan.FromSeconds(8),
+                    },
+                    onRetry: (
+                        exception,
+                        timespan,
+                        retryCount,
+                        context) =>
+                    {
+                        Logger.LogWarning(
+                            exception,
+                            "Cannot save orderBookMessage with order id {OrderId}, external order id {ExternalOrderId}, retryCount {RetryCount}",
+                            context["id"],
+                            context["externalOrderId"],
+                            retryCount);
+                    });
         }
 
         protected override BrokerSettingsBase Settings => _settings;
@@ -65,7 +78,7 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
                 try
                 {
                     await _retryPolicy.ExecuteAsync((context) => _executionOrderBookRepository.AddAsync(orderBook),
-                        new Context()
+                        new Context
                         {
                             {"id", orderBookMessage.OrderId},
                             {"externalOrderId", orderBookMessage.ExternalOrderId}
@@ -73,8 +86,7 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
                 }
                 catch (Exception ex)
                 {
-                    await _log.WriteErrorAsync(nameof(ExecutionOrderBookBroker), nameof(HandleMessage), 
-                        orderBook.ToJson(), ex);
+                    Logger.LogError(ex, "Failed to save order book: {OrderBook}", orderBook.ToJson());
                 }
             });
         }
