@@ -12,7 +12,7 @@
         <AspNetCoreModuleName>AspNetCoreModuleV2</AspNetCoreModuleName>
     </PropertyGroup>
     <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
     <PropertyGroup>
         <NoWarn>1701;1702;1705;CA2007</NoWarn>
@@ -33,24 +33,24 @@
         </None>
     </ItemGroup>
     <Target Name="CopySerilogConfig" AfterTargets="AfterBuild">
-        <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(OutDir)"/>
+        <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(OutDir)" />
     </Target>
     <Target Name="CopySerilogConfigOnPublish" AfterTargets="Publish">
-        <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(PublishDir)"/>
+        <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(PublishDir)" />
     </Target>
     <ItemGroup>
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0"/>
-        <PackageReference Include="Lykke.Common.ApiLibrary" Version="3.1.1"/>
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Lykke.Common.ApiLibrary" Version="3.1.1" />
         <PackageReference Include="Lykke.Logs" Version="7.4.0" />
-        <PackageReference Include="Lykke.Logs.Serilog" Version="2.3.0"/>
-        <PackageReference Include="Lykke.Snow.Common.Startup" Version="3.15.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.9"/>
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0"/>
+        <PackageReference Include="Lykke.Logs.Serilog" Version="2.3.0" />
+        <PackageReference Include="Lykke.Snow.Common.Startup" Version="3.15.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.9" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\MarginTrading.OrderBookService.SqlRepositories\MarginTrading.OrderBookService.SqlRepositories.csproj"/>
-        <ProjectReference Include="..\MarginTrading.OrderBookService.Contracts\MarginTrading.OrderBookService.Contracts.csproj"/>
-        <ProjectReference Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj"/>
-        <ProjectReference Include="..\MarginTrading.OrderBookService.Services\MarginTrading.OrderBookService.Services.csproj"/>
+        <ProjectReference Include="..\..\MarginTrading.OrderBookService.SqlRepositories\MarginTrading.OrderBookService.SqlRepositories.csproj" />
+        <ProjectReference Include="..\MarginTrading.OrderBookService.Contracts\MarginTrading.OrderBookService.Contracts.csproj" />
+        <ProjectReference Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
+        <ProjectReference Include="..\MarginTrading.OrderBookService.Services\MarginTrading.OrderBookService.Services.csproj" />
     </ItemGroup>
 </Project>
