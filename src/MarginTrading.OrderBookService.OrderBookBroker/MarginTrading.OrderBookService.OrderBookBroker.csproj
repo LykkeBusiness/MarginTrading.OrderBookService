@@ -13,7 +13,7 @@
         <AspNetCoreModuleName>AspNetCoreModuleV2</AspNetCoreModuleName>
     </PropertyGroup>
     <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
     <ItemGroup>
         <None Update="Dockerfile">
@@ -21,16 +21,17 @@
         </None>
     </ItemGroup>
     <Target Name="CopySerilogConfig" AfterTargets="AfterBuild">
-        <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(OutDir)"/>
+        <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(OutDir)" />
     </Target>
     <Target Name="CopySerilogConfigOnPublish" AfterTargets="Publish">
-        <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(PublishDir)"/>
+        <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(PublishDir)" />
     </Target>
     <ItemGroup>
         <PackageReference Include="LykkeBiz.MarginTrading.BrokerBase" Version="8.2.0" />
-        <PackageReference Include="Lykke.MarginTrading.OrderbookAggregator.Contracts" Version="1.0.1"/>
+        <PackageReference Include="Lykke.MarginTrading.OrderbookAggregator.Contracts" Version="1.0.1" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj"/>
+        <ProjectReference Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
+        <ProjectReference Include="..\MarginTrading.OrderBookService.Services\MarginTrading.OrderBookService.Services.csproj" />
     </ItemGroup>
 </Project>

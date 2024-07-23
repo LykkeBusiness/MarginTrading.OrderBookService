@@ -12,6 +12,8 @@ using Lykke.MarginTrading.BrokerBase.Settings;
 using Lykke.Snow.Common.Correlation.RabbitMq;
 
 using MarginTrading.OrderbookAggregator.Contracts.Messages;
+using MarginTrading.OrderBookService.Core.Services;
+
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
@@ -20,6 +22,7 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
 {
     public class Application : BrokerApplicationBase<ExternalExchangeOrderbookMessage>
     {
+        private readonly ILastNonZeroSpreadService _lastNonZeroSpreadService;
         private readonly ISystemClock _systemClock;
         private readonly Settings _settings;
         private readonly ConcurrentDictionary<string, DateTime> _lastMessageTimes = new ConcurrentDictionary<string, DateTime>();
@@ -27,6 +30,7 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
 
         public Application(
             RabbitMqCorrelationManager correlationManager,
+            ILastNonZeroSpreadService lastNonZeroSpreadService,
             ISystemClock systemClock,
             Settings settings,
             CurrentApplicationInfo applicationInfo,
@@ -39,6 +43,7 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
                 applicationInfo,
                 messagingComponentFactory)
         {
+            _lastNonZeroSpreadService = lastNonZeroSpreadService;
             _systemClock = systemClock;
             _settings = settings;
             _redis = redis;
@@ -83,6 +88,20 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
                 {
                     Logger.LogError(ex, "Failed to save order book to cache");
                 }
+                try
+                {
+                    if (orderBook.Asks[0].Price != 0 && orderBook.Bids[0].Price != 0 &&
+                        orderBook.Asks[0].Price != orderBook.Bids[0].Price &&
+                        !string.IsNullOrWhiteSpace(orderBook.AssetPairId))
+                    {
+                        var spread = orderBook.Asks[0].Price - orderBook.Bids[0].Price;
+                        await _lastNonZeroSpreadService.Update(orderBook.AssetPairId, spread);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(ex, "Failed to save last non zero spread");
+                }
             });
         }
 
@@ -92,25 +111,3 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

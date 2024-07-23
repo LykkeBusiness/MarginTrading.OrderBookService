@@ -9,6 +9,8 @@ using Lykke.SettingsReader;
 
 using MarginTrading.OrderbookAggregator.Contracts.Messages;
 using MarginTrading.OrderBookService.Core.Modules;
+using MarginTrading.OrderBookService.Core.Services;
+using MarginTrading.OrderBookService.Services;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -32,6 +34,9 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
             builder.AddMessagePackBrokerMessagingFactory<ExternalExchangeOrderbookMessage>();
             builder.RegisterType<Application>().As<IBrokerApplication>().SingleInstance();
             builder.RegisterType<SystemClock>().As<ISystemClock>().SingleInstance();
+            builder.RegisterType<LastNonZeroSpreadService>()
+                .As<ILastNonZeroSpreadService>()
+                .SingleInstance();
             builder.RegisterModule(new RedisModule(currentSettings.Db.RedisConfiguration));
         }
     }
