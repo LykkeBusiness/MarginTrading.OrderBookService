@@ -119,9 +119,9 @@ namespace MarginTrading.OrderBookService
                 }
 
 #if DEBUG
-                app.UseLykkeMiddleware(ServiceName, ex => ex.ToString());
+                app.UseLykkeMiddleware(ServiceName, ex => ex.ToString(), false, false);
 #else
-                app.UseLykkeMiddleware(ServiceName, ex => new ErrorResponse {ErrorMessage = "Technical problem", Details = ex.Message});
+                app.UseLykkeMiddleware(ServiceName, ex => new ErrorResponse {ErrorMessage = "Technical problem", Details = ex.Message}, false, false);
 #endif
 
                 app.UseRouting();

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <AssemblyName>MarginTrading.OrderBookService.OrderBookBroker</AssemblyName>
         <OutputType>Exe</OutputType>
         <PackageId>MarginTrading.OrderBookService.OrderBookBroker</PackageId>
@@ -8,7 +8,6 @@
         <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
         <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
         <Version>2.6.0</Version>
-        <LangVersion>8.0</LangVersion>
         <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
         <AspNetCoreModuleName>AspNetCoreModuleV2</AspNetCoreModuleName>
     </PropertyGroup>

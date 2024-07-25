@@ -1,10 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <AssemblyName>MarginTrading.OrderBookService.SqlRepositories</AssemblyName>
         <RootNamespace>MarginTrading.OrderBookService.SqlRepositories</RootNamespace>
         <Version>2.6.0</Version>
-        <LangVersion>8.0</LangVersion>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Dapper" Version="2.0.123" />
