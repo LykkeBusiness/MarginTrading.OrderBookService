@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <AssemblyName>MarginTrading.OrderBookService.OrderBookBroker</AssemblyName>
@@ -26,11 +26,10 @@
         <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(PublishDir)" />
     </Target>
     <ItemGroup>
-        <PackageReference Include="LykkeBiz.MarginTrading.BrokerBase" Version="8.2.0" />
-        <PackageReference Include="Lykke.MarginTrading.OrderbookAggregator.Contracts" Version="1.0.1" />
+        <PackageReference Include="LykkeBiz.MarginTrading.BrokerBase" />
+        <PackageReference Include="Lykke.MarginTrading.OrderbookAggregator.Contracts" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
-        <ProjectReference Include="..\MarginTrading.OrderBookService.Services\MarginTrading.OrderBookService.Services.csproj" />
     </ItemGroup>
 </Project>

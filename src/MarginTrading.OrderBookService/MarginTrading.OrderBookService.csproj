@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
@@ -38,13 +38,13 @@
         <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(PublishDir)" />
     </Target>
     <ItemGroup>
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0"/>
-        <PackageReference Include="LykkeBiz.Common.ApiLibrary" Version="5.0.0"/>
-        <PackageReference Include="Lykke.Logs" Version="7.4.0" />
-        <PackageReference Include="Lykke.Logs.Serilog" Version="2.3.0"/>
-        <PackageReference Include="Lykke.Snow.Common.Startup" Version="3.15.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.7" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.6.2" />
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" />
+        <PackageReference Include="LykkeBiz.Common.ApiLibrary" />
+        <PackageReference Include="Lykke.Logs" />
+        <PackageReference Include="Lykke.Logs.Serilog" />
+        <PackageReference Include="Lykke.Snow.Common.Startup" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\MarginTrading.OrderBookService.SqlRepositories\MarginTrading.OrderBookService.SqlRepositories.csproj" />
