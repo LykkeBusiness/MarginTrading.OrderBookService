@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <AssemblyName>MarginTrading.OrderBookService.OrderBookBroker</AssemblyName>
@@ -31,6 +31,5 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
-        <ProjectReference Include="..\MarginTrading.OrderBookService.Services\MarginTrading.OrderBookService.Services.csproj" />
     </ItemGroup>
 </Project>
