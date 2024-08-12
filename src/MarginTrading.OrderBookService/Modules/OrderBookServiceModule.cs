@@ -68,6 +68,10 @@ namespace MarginTrading.OrderBookService.Modules
             builder.RegisterType<ExecutionOrderBooksProviderService>()
                 .As<IExecutionOrderBooksProviderService>()
                 .SingleInstance();
+            
+            builder.RegisterType<LastNonZeroSpreadService>()
+                .As<ILastNonZeroSpreadService>()
+                .SingleInstance();
         }
 
         private void RegisterRedis(ContainerBuilder builder)
