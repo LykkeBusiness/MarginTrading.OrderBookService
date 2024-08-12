@@ -88,19 +88,12 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
                 {
                     Logger.LogError(ex, "Failed to save order book to cache");
                 }
-                try
+                if (orderBook.Asks[0].Price != 0 && orderBook.Bids[0].Price != 0 &&
+                    orderBook.Asks[0].Price != orderBook.Bids[0].Price &&
+                    !string.IsNullOrWhiteSpace(orderBook.AssetPairId))
                 {
-                    if (orderBook.Asks[0].Price != 0 && orderBook.Bids[0].Price != 0 &&
-                        orderBook.Asks[0].Price != orderBook.Bids[0].Price &&
-                        !string.IsNullOrWhiteSpace(orderBook.AssetPairId))
-                    {
-                        var spread = orderBook.Asks[0].Price - orderBook.Bids[0].Price;
-                        await _lastNonZeroSpreadService.Update(orderBook.AssetPairId, spread);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex, "Failed to save last non zero spread");
+                    var spread = orderBook.Asks[0].Price - orderBook.Bids[0].Price;
+                    await _lastNonZeroSpreadService.Update(orderBook.AssetPairId, spread);
                 }
             });
         }

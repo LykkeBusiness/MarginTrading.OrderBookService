@@ -16,7 +16,6 @@ namespace MarginTrading.OrderBookService.Services
     {
         private const string RedisLastNonZeroSpreadKeyFmt = "orderbook:asset:{0}:last-non-zero-spread";
         private readonly IConnectionMultiplexer _redis;
-        private ILastNonZeroSpreadService _lastNonZeroSpreadServiceImplementation;
 
         public LastNonZeroSpreadService(IConnectionMultiplexer redis)
         {
