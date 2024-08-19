@@ -1,15 +1,30 @@
+## 2.6.0 - Nova 2. Delivery 44 (August 19, 2024)
+### What's changed
+* LT-5623: Add api to fetch last non zero spread by assetid + save it in broker.
+* LT-5516: Update rabbitmq broker library with new rabbitmq.client and templates.
+
+### Deployment
+Please ensure that the mirroring policy is configured on the RabbitMQ server side for the following queues:
+- `dev.Gavel.events.exchange.MarginTrading.OrderBookService.ExecutionOrderBookBroker.DefaultEnv`
+- `lykke.exchangeconnector.orderbooks.MarginTrading.OrderBookService.OrderBookBroker.DefaultEnv`
+
+These queues require the mirroring policy to be enabled as part of our ongoing initiative to enhance system reliability. They are now classified as "no loss" queues, which necessitates proper configuration. The mirroring feature must be enabled on the RabbitMQ server side.
+
+In some cases, you may encounter an error indicating that the server-side configuration of a queue differs from the client’s expected configuration. If this occurs, please delete the queue, allowing it to be automatically recreated by the client.
+
+**Warning**: The "no loss" configuration is only valid if the mirroring policy is enabled on the server side.
+
+Please be aware that the provided queue names may include environment-specific identifiers (e.g., dev, test, prod). Be sure to replace these with the actual environment name in use. The same applies to instance names embedded within the queue names (e.g., DefaultEnv, etc.).
+
+
 ## 2.5.0 - Nova 2. Delivery 41 (April 01, 2024)
 ### What's changed
 * LT-5449: Update packages.
 
 
-
-
 ## 2.4.0 - Nova 2. Delivery 40 (February 28, 2024)
 ### What's changed
 * LT-5213: Update lykke.httpclientgenerator to 5.6.2.
-
-
 
 
 ## 2.3.1 - Nova 2. Delivery 39. Hotfix 2 (February 7, 2024)
@@ -20,8 +35,6 @@
 ## 2.3.0 - Nova 2. Delivery 39 (January 30, 2024)
 ### What's changed
 * LT-5145: Changelog.md for orderbook service.
-
-
 
 
 ## 2.2.0 - Nova 2. Delivery 38 (December 13, 2023)
