@@ -40,6 +40,7 @@
     </Target>
     <ItemGroup>
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Lykke.Common" Version="7.6.0" />
         <PackageReference Include="Lykke.Common.ApiLibrary" Version="3.1.1" />
         <PackageReference Include="Lykke.Logs" Version="7.4.0" />
         <PackageReference Include="Lykke.Logs.Serilog" Version="2.3.0" />
