@@ -8,7 +8,6 @@
     <ItemGroup>
         <PackageReference Include="Dapper" />
         <PackageReference Include="Lykke.Logs.MsSql" />
-        <PackageReference Include="Microsoft.Data.SqlClient" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\src\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
