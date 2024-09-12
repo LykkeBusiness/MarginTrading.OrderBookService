@@ -10,6 +10,6 @@
         <PackageReference Include="Lykke.Logs.MsSql" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\src\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
+        <ProjectReference Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
     </ItemGroup>
 </Project>

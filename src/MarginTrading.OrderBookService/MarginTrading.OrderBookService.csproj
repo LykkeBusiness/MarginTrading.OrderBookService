@@ -45,7 +45,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference
-            Include="..\..\MarginTrading.OrderBookService.SqlRepositories\MarginTrading.OrderBookService.SqlRepositories.csproj" />
+            Include="..\MarginTrading.OrderBookService.SqlRepositories\MarginTrading.OrderBookService.SqlRepositories.csproj" />
         <ProjectReference
             Include="..\MarginTrading.OrderBookService.Contracts\MarginTrading.OrderBookService.Contracts.csproj" />
         <ProjectReference

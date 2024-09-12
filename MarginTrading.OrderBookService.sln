@@ -36,7 +36,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarginTrading.OrderBookServ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarginTrading.OrderBookService.ExecutionOrderBookBroker", "src\MarginTrading.OrderBookService.ExecutionOrderBookBroker\MarginTrading.OrderBookService.ExecutionOrderBookBroker.csproj", "{ACCACBF9-5FEC-4672-B38F-7E6D014D0424}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarginTrading.OrderBookService.SqlRepositories", "MarginTrading.OrderBookService.SqlRepositories\MarginTrading.OrderBookService.SqlRepositories.csproj", "{7CDEF3CD-A18C-4551-9299-76F0F65C6AC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarginTrading.OrderBookService.SqlRepositories", "src\MarginTrading.OrderBookService.SqlRepositories\MarginTrading.OrderBookService.SqlRepositories.csproj", "{7CDEF3CD-A18C-4551-9299-76F0F65C6AC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
