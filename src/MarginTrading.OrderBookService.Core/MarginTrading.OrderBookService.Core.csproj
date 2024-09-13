@@ -5,7 +5,7 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations" />
-        <PackageReference Include="Lykke.Common" />
+        <PackageReference Include="LykkeBiz.Common" />
         <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="StackExchange.Redis" />
     </ItemGroup>

@@ -31,5 +31,6 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
+        <ProjectReference Include="..\MarginTrading.OrderBookService.Services\MarginTrading.OrderBookService.Services.csproj" />
     </ItemGroup>
 </Project>

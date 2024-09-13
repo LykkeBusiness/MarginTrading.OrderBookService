@@ -37,8 +37,8 @@
     <ItemGroup>
         <PackageReference Include="Autofac.Extensions.DependencyInjection" />
         <PackageReference Include="LykkeBiz.Common.ApiLibrary" />
-        <PackageReference Include="Lykke.Logs" />
-        <PackageReference Include="Lykke.Logs.Serilog" />
+        <PackageReference Include="LykkeBiz.Logs" />
+        <PackageReference Include="LykkeBiz.Logs.Serilog" />
         <PackageReference Include="Lykke.Snow.Common.Startup" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
