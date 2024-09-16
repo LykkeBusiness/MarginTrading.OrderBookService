@@ -5,11 +5,16 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+
 using Common;
+
 using Dapper;
+
 using Lykke.Logs.MsSql.Extensions;
+
 using MarginTrading.OrderBookService.Core.Domain.Abstractions;
 using MarginTrading.OrderBookService.Core.Repositories;
+
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 
@@ -44,7 +49,7 @@ create index IX_ExecutionOrderBooks_ExternalOrderId
 create unique index IX_ExecutionOrderBooks_OrderId
     on {0} (OrderId)
 ";
-        
+
         private readonly string _connectionString;
         private readonly ILogger<ExecutionOrderBookRepository> _logger;
 
@@ -99,14 +104,14 @@ create unique index IX_ExecutionOrderBooks_OrderId
         {
             await using var conn = new SqlConnection(_connectionString);
             return await conn.QueryFirstOrDefaultAsync<OrderExecutionOrderBookEntity>(
-                $"SELECT * FROM {TableName} WHERE OrderId=@orderId", new {orderId});
+                $"SELECT * FROM {TableName} WHERE OrderId=@orderId", new { orderId });
         }
 
         public async Task<IOrderExecutionOrderBook> GetByExternalOrderAsync(string externalOrderId)
         {
             await using var conn = new SqlConnection(_connectionString);
             return await conn.QueryFirstOrDefaultAsync<OrderExecutionOrderBookEntity>(
-                $"SELECT * FROM {TableName} WHERE ExternalOrderId=@externalOrderId", new {externalOrderId});
+                $"SELECT * FROM {TableName} WHERE ExternalOrderId=@externalOrderId", new { externalOrderId });
         }
     }
 }

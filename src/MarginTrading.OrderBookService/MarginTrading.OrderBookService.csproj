@@ -1,19 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <NoWarn>$(NoWarn);1591</NoWarn>
         <Version>2.6.0</Version>
         <AssemblyName>MarginTrading.OrderBookService</AssemblyName>
         <RootNamespace>MarginTrading.OrderBookService</RootNamespace>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <LangVersion>8.0</LangVersion>
         <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
         <AspNetCoreModuleName>AspNetCoreModuleV2</AspNetCoreModuleName>
     </PropertyGroup>
-    <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    </ItemGroup>
     <PropertyGroup>
         <NoWarn>1701;1702;1705;CA2007</NoWarn>
         <UserSecretsId>F7428201-B7F7-4571-9ABD-12BDABF81524</UserSecretsId>
@@ -39,18 +35,22 @@
         <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(PublishDir)" />
     </Target>
     <ItemGroup>
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
-        <PackageReference Include="Lykke.Common.ApiLibrary" Version="3.1.1" />
-        <PackageReference Include="Lykke.Logs" Version="7.4.0" />
-        <PackageReference Include="Lykke.Logs.Serilog" Version="2.3.0" />
-        <PackageReference Include="Lykke.Snow.Common.Startup" Version="3.15.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.9" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" />
+        <PackageReference Include="LykkeBiz.Common.ApiLibrary" />
+        <PackageReference Include="LykkeBiz.Logs" />
+        <PackageReference Include="LykkeBiz.Logs.Serilog" />
+        <PackageReference Include="Lykke.Snow.Common.Startup" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\MarginTrading.OrderBookService.SqlRepositories\MarginTrading.OrderBookService.SqlRepositories.csproj" />
-        <ProjectReference Include="..\MarginTrading.OrderBookService.Contracts\MarginTrading.OrderBookService.Contracts.csproj" />
-        <ProjectReference Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
-        <ProjectReference Include="..\MarginTrading.OrderBookService.Services\MarginTrading.OrderBookService.Services.csproj" />
+        <ProjectReference
+            Include="..\MarginTrading.OrderBookService.SqlRepositories\MarginTrading.OrderBookService.SqlRepositories.csproj" />
+        <ProjectReference
+            Include="..\MarginTrading.OrderBookService.Contracts\MarginTrading.OrderBookService.Contracts.csproj" />
+        <ProjectReference
+            Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
+        <ProjectReference
+            Include="..\MarginTrading.OrderBookService.Services\MarginTrading.OrderBookService.Services.csproj" />
     </ItemGroup>
 </Project>

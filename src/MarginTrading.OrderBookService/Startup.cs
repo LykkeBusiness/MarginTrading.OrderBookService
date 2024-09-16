@@ -119,9 +119,9 @@ namespace MarginTrading.OrderBookService
                 }
 
 #if DEBUG
-                app.UseLykkeMiddleware(ServiceName, ex => ex.ToString());
+                app.UseLykkeMiddleware(ServiceName, ex => ex.ToString(), false, false);
 #else
-                app.UseLykkeMiddleware(ServiceName, ex => new ErrorResponse {ErrorMessage = "Technical problem", Details = ex.Message});
+                app.UseLykkeMiddleware(ServiceName, ex => new ErrorResponse {ErrorMessage = "Technical problem", Details = ex.Message}, false, false);
 #endif
 
                 app.UseRouting();
@@ -225,8 +225,7 @@ namespace MarginTrading.OrderBookService
             }
             else if (settings.CurrentValue.OrderBookService.Db.StorageMode == StorageMode.Azure)
             {
-                aggregateLogger.AddLog(services.UseLogToAzureStorage(settings.Nested(s => s.OrderBookService.Db.LogsConnString),
-                    null, logName, consoleLogger));
+                throw new NotImplementedException("Azure storage mode is not supported");
             }
 
             LogLocator.Log = aggregateLogger;

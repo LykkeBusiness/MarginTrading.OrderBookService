@@ -2,6 +2,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Autofac;
+
 using StackExchange.Redis;
 
 namespace MarginTrading.OrderBookService.Core.Modules
