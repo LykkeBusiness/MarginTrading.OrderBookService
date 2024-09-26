@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Version>2.6.0</Version>
+    <Version>2.7.0</Version>
     <PackageId>Lykke.MarginTrading.OrderBookService.Contracts</PackageId>
     <Company>Lykke</Company>
     <AssemblyName>Lykke.MarginTrading.OrderBookService.Contracts</AssemblyName>
