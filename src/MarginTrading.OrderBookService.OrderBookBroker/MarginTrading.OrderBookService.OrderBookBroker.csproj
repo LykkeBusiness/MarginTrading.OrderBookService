@@ -27,10 +27,12 @@
     </Target>
     <ItemGroup>
         <PackageReference Include="LykkeBiz.MarginTrading.BrokerBase" />
+        <PackageReference Include="LykkeBiz.RabbitMqBroker" />
         <PackageReference Include="Lykke.MarginTrading.OrderbookAggregator.Contracts" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
-        <ProjectReference Include="..\MarginTrading.OrderBookService.Services\MarginTrading.OrderBookService.Services.csproj" />
+        <ProjectReference
+            Include="..\MarginTrading.OrderBookService.Services\MarginTrading.OrderBookService.Services.csproj" />
     </ItemGroup>
 </Project>
