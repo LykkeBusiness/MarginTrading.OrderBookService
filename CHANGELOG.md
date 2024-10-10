@@ -1,3 +1,8 @@
+## 2.7.0 - Nova 2. Delivery 46 (September 26, 2024)
+### What's changed
+* LT-5601: Migrate to net 8.
+
+
 ## 2.6.0 - Nova 2. Delivery 44 (August 19, 2024)
 ### What's changed
 * LT-5623: Add api to fetch last non zero spread by assetid + save it in broker.

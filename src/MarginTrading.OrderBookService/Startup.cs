@@ -225,8 +225,7 @@ namespace MarginTrading.OrderBookService
             }
             else if (settings.CurrentValue.OrderBookService.Db.StorageMode == StorageMode.Azure)
             {
-                aggregateLogger.AddLog(services.UseLogToAzureStorage(settings.Nested(s => s.OrderBookService.Db.LogsConnString),
-                    null, logName, consoleLogger));
+                throw new NotImplementedException("Azure storage mode is not supported");
             }
 
             LogLocator.Log = aggregateLogger;
