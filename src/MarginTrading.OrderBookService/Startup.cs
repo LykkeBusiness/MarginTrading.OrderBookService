@@ -151,8 +151,6 @@ namespace MarginTrading.OrderBookService
         {
             try
             {
-                ApplicationContainer.Resolve<AssemblyLogger>().StartLogging();
-                
                 Program.AppHost.WriteLogs(Environment, LogLocator.Log);
 
                 Log?.WriteMonitorAsync("", "", "Started").Wait();
