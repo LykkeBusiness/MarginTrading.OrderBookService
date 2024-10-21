@@ -27,7 +27,6 @@
     </Target>
     <ItemGroup>
         <PackageReference Include="LykkeBiz.MarginTrading.BrokerBase" />
-        <PackageReference Include="LykkeBiz.RabbitMqBroker" />
         <PackageReference Include="Lykke.MarginTrading.OrderbookAggregator.Contracts" />
     </ItemGroup>
     <ItemGroup>
