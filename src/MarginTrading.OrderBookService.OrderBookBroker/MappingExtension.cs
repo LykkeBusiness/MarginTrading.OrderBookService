@@ -4,8 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MarginTrading.OrderbookAggregator.Contracts.Messages;
 using MarginTrading.OrderBookService.Core.Domain;
+using MarginTrading.OrderBookService.OrderBookBroker.ExternalContracts;
 
 namespace MarginTrading.OrderBookService.OrderBookBroker
 {
@@ -25,7 +25,7 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
         }
 
         private static List<Core.Domain.VolumePrice> ToDomain(
-            this List<OrderbookAggregator.Contracts.Messages.VolumePrice> src)
+            this List<ExternalContracts.VolumePrice> src)
         {
             return src.Select(x => new Core.Domain.VolumePrice { Volume = x.Volume, Price = x.Price, }).ToList();
         }

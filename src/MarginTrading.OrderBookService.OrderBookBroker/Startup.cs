@@ -7,9 +7,9 @@ using Lykke.MarginTrading.BrokerBase;
 using Lykke.MarginTrading.BrokerBase.Settings;
 using Lykke.SettingsReader;
 
-using MarginTrading.OrderbookAggregator.Contracts.Messages;
 using MarginTrading.OrderBookService.Core.Modules;
 using MarginTrading.OrderBookService.Core.Services;
+using MarginTrading.OrderBookService.OrderBookBroker.ExternalContracts;
 using MarginTrading.OrderBookService.Services;
 
 using Microsoft.Extensions.Configuration;
