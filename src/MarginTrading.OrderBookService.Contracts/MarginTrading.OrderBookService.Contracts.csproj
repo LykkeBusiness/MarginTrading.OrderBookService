@@ -8,10 +8,7 @@
     <RootNamespace>Lykke.MarginTrading.OrderBookService.Contracts</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" />
-    <PackageReference Include="MessagePack" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Lykke.Contracts" />
     <PackageReference Include="Refit" />
-    <PackageReference Include="System.Collections.Immutable" />
   </ItemGroup>
 </Project>

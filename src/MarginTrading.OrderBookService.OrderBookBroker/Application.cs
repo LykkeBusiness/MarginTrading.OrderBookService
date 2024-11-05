@@ -11,8 +11,8 @@ using Lykke.MarginTrading.BrokerBase.Messaging;
 using Lykke.MarginTrading.BrokerBase.Settings;
 using Lykke.Snow.Common.Correlation.RabbitMq;
 
-using MarginTrading.OrderbookAggregator.Contracts.Messages;
 using MarginTrading.OrderBookService.Core.Services;
+using MarginTrading.OrderBookService.OrderBookBroker.ExternalContracts;
 
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging;
