@@ -11,7 +11,7 @@ namespace MarginTrading.OrderBookService.ExecutionOrderBookBroker
     {
         public static void Main(string[] args)
         {
-            RunOnPort(5091);
+            RunOnPort(5091, true);
         }
     }
 }
