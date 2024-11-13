@@ -6,13 +6,16 @@ using JetBrains.Annotations;
 using Lykke.MarginTrading.BrokerBase;
 using Lykke.MarginTrading.BrokerBase.Settings;
 using Lykke.SettingsReader;
+using Lykke.SettingsReader.SettingsTemplate;
 
 using MarginTrading.OrderBookService.Core.Modules;
 using MarginTrading.OrderBookService.Core.Services;
 using MarginTrading.OrderBookService.OrderBookBroker.ExternalContracts;
 using MarginTrading.OrderBookService.Services;
 
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Internal;
 
@@ -26,6 +29,17 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
         }
 
         protected override string ApplicationName => "OrderBookBroker";
+
+        public override void ConfigureServices(IServiceCollection services)
+        {
+            base.ConfigureServices(services);
+            services.AddSettingsTemplateGenerator();
+        }
+
+        protected override void ConfigureEndpoints(IEndpointRouteBuilder endpointRouteBuilder)
+        {
+            endpointRouteBuilder.AddSettingsTemplateEndpoint();
+        }
 
         protected override void RegisterCustomServices(ContainerBuilder builder, IReloadingManager<Settings> settings)
         {

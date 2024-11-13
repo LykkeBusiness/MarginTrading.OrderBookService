@@ -20,6 +20,7 @@
     <ItemGroup>
         <PackageReference Include="LykkeBiz.MarginTrading.BrokerBase" />
         <PackageReference Include="LykkeBiz.RabbitMqBroker" />
+        <PackageReference Include="LykkeBiz.SettingsReader" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />

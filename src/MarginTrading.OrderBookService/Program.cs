@@ -6,8 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using JetBrains.Annotations;
+using Lykke.SettingsReader.ConfigurationProvider;
 using MarginTrading.OrderBookService.Services;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -25,11 +25,11 @@ namespace MarginTrading.OrderBookService
             Console.WriteLine($"{PlatformServices.Default.Application.ApplicationName} version {PlatformServices.Default.Application.ApplicationVersion}");
 
             var restartAttemptsLeft = int.TryParse(Environment.GetEnvironmentVariable("RESTART_ATTEMPTS_NUMBER"),
-                out var restartAttemptsFromEnv) 
+                out var restartAttemptsFromEnv)
                 ? restartAttemptsFromEnv
                 : int.MaxValue;
             var restartAttemptsInterval = int.TryParse(Environment.GetEnvironmentVariable("RESTART_ATTEMPTS_INTERVAL_MS"),
-                out var restartAttemptsIntervalFromEnv) 
+                out var restartAttemptsIntervalFromEnv)
                 ? restartAttemptsIntervalFromEnv
                 : 10000;
 
@@ -40,11 +40,12 @@ namespace MarginTrading.OrderBookService
                     var configuration = new ConfigurationBuilder()
                         .AddJsonFile("appsettings.json", optional: true)
                         .AddUserSecrets<Startup>()
+                        .AddHttpSourceConfiguration()
                         .AddEnvironmentVariables()
                         .Build();
-                    
+
                     AppHost = Host.CreateDefaultBuilder()
-                        .UseServiceProviderFactory(new AutofacServiceProviderFactory()) 
+                        .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                         .ConfigureWebHostDefaults(webBuilder =>
                         {
                             webBuilder.ConfigureKestrel(serverOptions =>
