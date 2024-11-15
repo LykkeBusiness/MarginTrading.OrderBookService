@@ -27,7 +27,6 @@
   </Target>
   <ItemGroup>
     <PackageReference Include="LykkeBiz.MarginTrading.BrokerBase" />
-    <PackageReference Include="LykkeBiz.SettingsReader" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference
