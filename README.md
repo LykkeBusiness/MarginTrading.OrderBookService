@@ -55,23 +55,14 @@ All variables and value constraints are default. For instance, to set host URL t
 
 ### Settings ###
 
-Settings schema is:
+OrderBookService settings schema is:
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./service.json) -->
+<!-- MARKDOWN-AUTO-DOCS:END -->
 
-```json
-{
-  "OrderBookService": {
-    "Db": {
-      "StorageMode": "SqlServer",
-      "LogsConnString": "sql connection string",
-      "RedisSettings": {
-        "Configuration": "redis connection string"
-      },
-      "OrderBooksCacheKeyPattern": "OrderBookService:{0}:{1}"
-    },
-    "ChaosKitty": {
-      "StateOfChaos": 0
-    },
-    "UseSerilog": false
-  }
-}
-```
+ExecutionOrderBookBroker settings schema is:
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./executionBroker.json) -->
+<!-- MARKDOWN-AUTO-DOCS:END -->
+
+OrderBookBroker settings schema is:
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./broker.json) -->
+<!-- MARKDOWN-AUTO-DOCS:END -->

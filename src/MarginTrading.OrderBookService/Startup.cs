@@ -15,6 +15,7 @@ using Lykke.Logs.MsSql.Repositories;
 using Lykke.Logs.Serilog;
 using Lykke.MarginTrading.OrderBookService.Contracts.Api;
 using Lykke.SettingsReader;
+using Lykke.SettingsReader.SettingsTemplate;
 using Lykke.Snow.Common.AssemblyLogging;
 using Lykke.Snow.Common.Startup;
 using Lykke.Snow.Common.Startup.ApiKey;
@@ -87,6 +88,8 @@ namespace MarginTrading.OrderBookService
                 Log = CreateLog(Configuration, services, _mtSettingsManager);
 
                 services.AddSingleton<ILoggerFactory>(x => new WebHostLoggerFactory(Log));
+
+                services.AddSettingsTemplateGenerator();
             }
             catch (Exception ex)
             {
@@ -94,7 +97,7 @@ namespace MarginTrading.OrderBookService
                 throw;
             }
         }
-        
+
         [UsedImplicitly]
         public void ConfigureContainer(ContainerBuilder builder)
         {
@@ -110,7 +113,7 @@ namespace MarginTrading.OrderBookService
             try
             {
                 ApplicationContainer = app.ApplicationServices.GetAutofacRoot();
-                
+
                 if (env.IsDevelopment())
                 {
                     app.UseDeveloperExceptionPage();
@@ -132,6 +135,7 @@ namespace MarginTrading.OrderBookService
                 app.UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
+                    endpoints.MapSettingsTemplate();
                 });
                 app.UseSwagger();
                 app.UseSwaggerUI(a => a.SwaggerEndpoint("/swagger/v1/swagger.json", "Main Swagger"));
