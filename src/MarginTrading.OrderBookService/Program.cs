@@ -18,6 +18,7 @@ namespace MarginTrading.OrderBookService
     [UsedImplicitly]
     internal class Program
     {
+        //test
         internal static IHost AppHost { get; private set; }
 
         public static async Task Main()
