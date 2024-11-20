@@ -9,7 +9,6 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
     [UsedImplicitly]
     public class Program: WebAppProgramBase<Startup>
     {
-        //test
         public static void Main(string[] args)
         {
             RunOnPort(5091, true);
