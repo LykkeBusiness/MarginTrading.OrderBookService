@@ -38,7 +38,7 @@ namespace MarginTrading.OrderBookService.OrderBookBroker
 
         protected override void ConfigureEndpoints(IEndpointRouteBuilder endpointRouteBuilder)
         {
-            endpointRouteBuilder.AddSettingsTemplateEndpoint();
+            endpointRouteBuilder.MapSettingsTemplate();
         }
 
         protected override void RegisterCustomServices(ContainerBuilder builder, IReloadingManager<Settings> settings)
