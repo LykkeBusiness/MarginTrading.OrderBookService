@@ -4,7 +4,6 @@
     <Version>2.7.0</Version>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MarginTrading.OrderBookService.Contracts\MarginTrading.OrderBookService.Contracts.csproj" />
     <ProjectReference Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
   </ItemGroup>
 </Project>

@@ -28,12 +28,11 @@
   <ItemGroup>
     <PackageReference Include="LykkeBiz.MarginTrading.BrokerBase" />
     <PackageReference Include="LykkeBiz.SettingsReader" />
+    <PackageReference Include="Lykke.MarginTrading.OrderBookService.Contracts" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference
       Include="..\MarginTrading.OrderBookService.SqlRepositories\MarginTrading.OrderBookService.SqlRepositories.csproj" />
-    <ProjectReference
-      Include="..\MarginTrading.OrderBookService.Contracts\MarginTrading.OrderBookService.Contracts.csproj" />
     <ProjectReference Include="..\MarginTrading.OrderBookService.Core\MarginTrading.OrderBookService.Core.csproj" />
     <ProjectReference
       Include="..\MarginTrading.OrderBookService.Services\MarginTrading.OrderBookService.Services.csproj" />
