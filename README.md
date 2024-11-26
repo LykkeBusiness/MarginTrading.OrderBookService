@@ -57,12 +57,186 @@ All variables and value constraints are default. For instance, to set host URL t
 
 OrderBookService settings schema is:
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./service.json) -->
+<!-- The below code snippet is automatically added from ./service.json -->
+```json
+{
+  "APP_UID": "Integer",
+  "ASPNETCORE_ENVIRONMENT": "String",
+  "ASPNETCORE_ENVIRONMENT_TEST1": "String",
+  "ENVIRONMENT": "String",
+  "ENVIRONMENT_TEST1": "String",
+  "IsLive": "Boolean",
+  "Kestrel": {
+    "EndPoints": {
+      "Http": {
+        "Url": "String"
+      }
+    }
+  },
+  "OrderBookService": {
+    "ChaosKitty": {
+      "StateOfChaos": "Integer"
+    },
+    "Db": {
+      "DataConnString": "String",
+      "LogsConnString": "String",
+      "OrderBooksCacheKeyPattern": "String",
+      "RedisSettings": {
+        "Configuration": "String"
+      },
+      "StorageMode": "String"
+    },
+    "UseSerilog": "Boolean"
+  },
+  "OrderBookServiceClient": {
+    "ApiKey": "String",
+    "ServiceUrl": "String",
+    "UseSerilog": "Boolean"
+  },
+  "serilog": {
+    "minimumLevel": {
+      "default": "String"
+    }
+  },
+  "TZ": "String"
+}
+```
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 ExecutionOrderBookBroker settings schema is:
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./executionBroker.json) -->
+<!-- The below code snippet is automatically added from ./executionBroker.json -->
+```json
+{
+  "APP_UID": "Integer",
+  "ASPNETCORE_ENVIRONMENT": "String",
+  "ASPNETCORE_ENVIRONMENT_TEST1": "String",
+  "ENVIRONMENT": "String",
+  "ENVIRONMENT_TEST1": "String",
+  "Kestrel": {
+    "EndPoints": {
+      "Http": {
+        "Url": "String"
+      }
+    }
+  },
+  "MtBrokerSettings": {
+    "Db": {
+      "ConnString": "String",
+      "StorageMode": "String"
+    },
+    "MtRabbitMqConnString": "String",
+    "RabbitMqQueues": {
+      "ExecutionOrderBooks": {
+        "ExchangeName": "String"
+      }
+    }
+  },
+  "MtBrokersLogs": {
+    "LogsConnString": "String",
+    "StorageMode": "String",
+    "UseSerilog": "Boolean"
+  },
+  "serilog": {
+    "Enrich": [
+      "String"
+    ],
+    "minimumLevel": {
+      "default": "String"
+    },
+    "Properties": {
+      "Application": "String"
+    },
+    "Using": [
+      "String"
+    ],
+    "writeTo": [
+      {
+        "Args": {
+          "configure": [
+            {
+              "Args": {
+                "outputTemplate": "String"
+              },
+              "Name": "String"
+            }
+          ]
+        },
+        "Name": "String"
+      }
+    ]
+  },
+  "TZ": "String"
+}
+```
 <!-- MARKDOWN-AUTO-DOCS:END -->
 
 OrderBookBroker settings schema is:
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./broker.json) -->
+<!-- The below code snippet is automatically added from ./broker.json -->
+```json
+{
+  "APP_UID": "Integer",
+  "ASPNETCORE_ENVIRONMENT": "String",
+  "ASPNETCORE_ENVIRONMENT_TEST1": "String",
+  "ENVIRONMENT": "String",
+  "ENVIRONMENT_TEST1": "String",
+  "IsLive": "Boolean",
+  "Kestrel": {
+    "EndPoints": {
+      "Http": {
+        "Url": "String"
+      }
+    }
+  },
+  "MtBrokerSettings": {
+    "Db": {
+      "RedisConfiguration": "String"
+    },
+    "MtRabbitMqConnString": "String",
+    "OrderBooksCacheKeyPattern": "String",
+    "OrderBookThrottlingRateThreshold": "Integer",
+    "RabbitMqQueues": {
+      "OrderBooks": {
+        "ExchangeName": "String"
+      }
+    }
+  },
+  "MtBrokersLogs": {
+    "LogsConnString": "String",
+    "StorageMode": "String",
+    "UseSerilog": "Boolean"
+  },
+  "serilog": {
+    "Enrich": [
+      "String"
+    ],
+    "minimumLevel": {
+      "default": "String"
+    },
+    "Properties": {
+      "Application": "String"
+    },
+    "Using": [
+      "String"
+    ],
+    "writeTo": [
+      {
+        "Args": {
+          "configure": [
+            {
+              "Args": {
+                "outputTemplate": "String"
+              },
+              "Name": "String"
+            }
+          ]
+        },
+        "Name": "String"
+      }
+    ]
+  },
+  "TZ": "String"
+}
+```
 <!-- MARKDOWN-AUTO-DOCS:END -->
