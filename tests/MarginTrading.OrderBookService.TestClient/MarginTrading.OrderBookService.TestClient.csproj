@@ -8,7 +8,4 @@
     <PackageReference Include="LykkeBiz.HttpClientGenerator" />
     <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\MarginTrading.OrderBookService.Contracts\MarginTrading.OrderBookService.Contracts.csproj" />
-  </ItemGroup>
 </Project>
