@@ -8,6 +8,7 @@
         <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
         <PackageId>MarginTrading.OrderBookService.OrderBookBroker</PackageId>
         <Version>2.7.0</Version>
+        <UserSecretsId>16f55f0c-8802-4b65-a602-6ca4bb18b6d0</UserSecretsId>
     </PropertyGroup>
     <ItemGroup>
         <None Update="Dockerfile">
