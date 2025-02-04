@@ -3,7 +3,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <AssemblyName>MarginTrading.OrderBookService.SqlRepositories</AssemblyName>
         <RootNamespace>MarginTrading.OrderBookService.SqlRepositories</RootNamespace>
-        <Version>2.5.2</Version>
+        <Version>2.5.3</Version>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Dapper" />
