@@ -1,3 +1,8 @@
+## 2.10.1 - Nova 2. Delivery 49. Hotfix 1 (February 17, 2025)
+### What's changed
+* LT-6054: Don't use settingsService explicitly in brokers
+
+
 ## 2.10.0 - Nova 2. Delivery 49 (February 07, 2025)
 ### What's changed
 * LT-5993: Update rabbitmqbroker in margintrading.orderbookservice.
