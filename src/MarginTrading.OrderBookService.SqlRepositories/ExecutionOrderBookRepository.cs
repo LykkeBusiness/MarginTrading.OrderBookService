@@ -91,7 +91,7 @@ END;
             try
             {
                 _logger.LogInformation($"Making sure indexes exist on {TableName}.");
-                conn.ExecuteAsync(string.Format(CreateIndexesScript, TableName));
+                conn.Execute(string.Format(CreateIndexesScript, TableName));
             }
             catch (Exception ex)
             {
