@@ -54,7 +54,7 @@ END;
 
 IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_ExecutionOrderBooks_OrderId' AND object_id = OBJECT_ID('{0}'))
 BEGIN
-CREATE UNIQUE INDEX IX_ExecutionOrderBooks_OrderId ON {0} (ExternalOrderId) INCLUDE (Spread)
+CREATE UNIQUE INDEX IX_ExecutionOrderBooks_OrderId ON {0} (OrderId) INCLUDE (Spread)
 END;
 ";
 
@@ -90,6 +90,7 @@ END;
             
             try
             {
+                _logger.LogInformation($"Making sure indexes exist on {TableName}.");
                 conn.ExecuteAsync(string.Format(CreateIndexesScript, TableName));
             }
             catch (Exception ex)
