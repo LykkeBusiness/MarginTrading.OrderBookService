@@ -116,23 +116,6 @@ ExecutionOrderBookBroker settings schema is:
       }
     }
   },
-  "MtBrokerSettings": {
-    "Db": {
-      "ConnString": "String",
-      "StorageMode": "String"
-    },
-    "MtRabbitMqConnString": "String",
-    "RabbitMqQueues": {
-      "ExecutionOrderBooks": {
-        "ExchangeName": "String"
-      }
-    }
-  },
-  "MtBrokersLogs": {
-    "LogsConnString": "String",
-    "StorageMode": "String",
-    "UseSerilog": "Boolean"
-  },
   "serilog": {
     "Enrich": [
       "String"
@@ -182,24 +165,6 @@ OrderBookBroker settings schema is:
         "Url": "String"
       }
     }
-  },
-  "MtBrokerSettings": {
-    "Db": {
-      "RedisConfiguration": "String"
-    },
-    "MtRabbitMqConnString": "String",
-    "OrderBooksCacheKeyPattern": "String",
-    "OrderBookThrottlingRateThreshold": "Integer",
-    "RabbitMqQueues": {
-      "OrderBooks": {
-        "ExchangeName": "String"
-      }
-    }
-  },
-  "MtBrokersLogs": {
-    "LogsConnString": "String",
-    "StorageMode": "String",
-    "UseSerilog": "Boolean"
   },
   "serilog": {
     "Enrich": [
