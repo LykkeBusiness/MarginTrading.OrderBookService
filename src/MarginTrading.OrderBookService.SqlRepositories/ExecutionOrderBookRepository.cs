@@ -39,15 +39,23 @@ create table {0}
     Volume           float default 0 not null,
     ReceiveTimestamp datetime2
 )
+";
+        
+        private const string CreateIndexesScript = @"
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_ExecutionOrderBooks_Base' AND object_id = OBJECT_ID('{0}'))
+BEGIN
+CREATE INDEX IX_ExecutionOrderBooks_Base ON {0} (OrderId) INCLUDE (Spread)
+END;
 
-create index IX_ExecutionOrderBooks_Base
-    on {0} (OrderId) include (Spread)
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_ExecutionOrderBooks_ExternalOrderId' AND object_id = OBJECT_ID('{0}'))
+BEGIN
+CREATE INDEX IX_ExecutionOrderBooks_ExternalOrderId ON {0} (ExternalOrderId) INCLUDE (Spread)
+END;
 
-create index IX_ExecutionOrderBooks_ExternalOrderId
-    on {0} (ExternalOrderId) include (Spread)
-
-create unique index IX_ExecutionOrderBooks_OrderId
-    on {0} (OrderId)
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_ExecutionOrderBooks_OrderId' AND object_id = OBJECT_ID('{0}'))
+BEGIN
+CREATE UNIQUE INDEX IX_ExecutionOrderBooks_OrderId ON {0} (OrderId) INCLUDE (Spread)
+END;
 ";
 
         private readonly string _connectionString;
@@ -78,6 +86,16 @@ create unique index IX_ExecutionOrderBooks_OrderId
             {
                 _logger.LogError(ex, "Error on table [{TableName}] creation", TableName);
                 throw;
+            }
+            
+            try
+            {
+                _logger.LogInformation($"Making sure indexes exist on {TableName}.");
+                conn.Execute(string.Format(CreateIndexesScript, TableName));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error on indexes [{TableName}] creation. Exception suppressed.", TableName);
             }
         }
 
