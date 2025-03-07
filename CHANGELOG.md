@@ -1,3 +1,9 @@
+## 2.11.0 - Nova 2. Delivery 50 (March 07, 2025)
+### What's changed
+* LT-6090: Index creation is not idempotent.
+* LT-6054: Don't use settingsservice explicitly in brokers.
+
+
 ## 2.10.1 - Nova 2. Delivery 49. Hotfix 1 (February 17, 2025)
 ### What's changed
 * LT-6054: Don't use settingsService explicitly in brokers
